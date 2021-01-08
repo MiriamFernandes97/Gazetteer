@@ -1,18 +1,12 @@
 
-
 //Global variables to store the users coordinates, coutries for the autoselect, and polygon of the current country
 let userCoords = {};
 const countryList = [];
 let countryOutline;
 
-//let weatherUrl="https://pro.openweathermap.org/data/2.5/forecast/climate?q={city name},{country code}&appid={API key}";
-
-
-let weatherUrl="";
+let weatherUrl;//???
 
 //Setting the details for the different map displays
-
-
 
 const light = L.tileLayer(
   'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
@@ -57,13 +51,14 @@ const earthAtNight = L.tileLayer(
   }
 );
 
-const temp = L.tileLayer(weatherUrl, {
+
+const temp = L.tileLayer(weatherUrl, { // doesn't work
   tileSize: 512,
   zoomOffset: -1,
   layer: 'temp_new',
   minZoom: 2,
 });
-const precipitation = L.tileLayer(weatherUrl, {
+const precipitation = L.tileLayer(weatherUrl, { // doesn't work
   tileSize: 512,
   minZoom: 2,
   zoomOffset: -1,
@@ -84,11 +79,11 @@ const baseMaps = {
   'Earth At Night': earthAtNight,
 };
 
-const weatherOverlays = {
-  Temperature: temp,
+const weatherOverlays = { // doesn't work bec of temp & precip.
+  Temperature: temp, 
   Precipitation: precipitation,
 };
-L.control.layers(baseMaps, weatherOverlays).addTo(map);
+L.control.layers(baseMaps, weatherOverlays).addTo(map); 
 
 
 //Initializing the layer groups to be populated with markers
@@ -98,7 +93,7 @@ const monumentLayer = L.layerGroup();
 const monumentMarkers = L.markerClusterGroup({
   iconCreateFunction: (cluster) => {
     return L.divIcon({
-      html: `<div><span>${cluster.getChildCount()}</span></div>`,
+      html: `<div><span>${cluster.getChildCount()}</span></div>`, // this is the html for the icon. This is done using interpolation.
       className: 'monument-marker-cluster marker-cluster',
       iconSize: new L.Point(40, 40),
     });
@@ -151,7 +146,7 @@ const getCountryInfo = (countryCode) => {
 const selectNewCountry = (country, type) => {
   const start = Date.now();
 
-  $.ajax({
+  $.ajax({// posting this info to the php file and getting the info from the api call in the php file anf returning it to us.
     url: 'php/getPolygon.php',
     type: 'POST',
     dataType: 'json',
@@ -181,17 +176,18 @@ const selectNewCountry = (country, type) => {
     });
 };
 
+function handleFail(){
+  $('#modalTitle').html(`Error`);
+  $('#modalBody').html(
+    'Unfortunately there was an error finding a country for these coordinates. Please try a different location'
+  );
+  $('#infoModal').modal();
+}
+
 //Use the users coordinates to get the name of their country
 const getCountryFromCoords = (latitude, longitude) => {
 
-  function handlefail(){
-    $('#modalTitle').html(`Error`);
-    $('#modalBody').html(
-      'Unfortunately there was an error finding a country for these coordinates. Please try a different location'
-    );
-    $('#infoModal').modal();
-  }
-  $.ajax({
+    $.ajax({
     url: 'php/getCountryFromCoords.php',
     type: 'POST',
     dataType: 'json',
@@ -206,7 +202,7 @@ const getCountryFromCoords = (latitude, longitude) => {
       const data = result.data[0];
 
       if(data ===  undefined || data === null ){
-        handlefail();
+        handleFail();
         return;
       }
 
@@ -222,20 +218,67 @@ const getCountryFromCoords = (latitude, longitude) => {
       }
     })
     .fail(() => {
-      handlefail();
+      handleFail();
     });
 
 };
 
+// Populate Select
+
+const loadCountrySelect =()=>{
+  console.log('loadCountrySelect');
+
+  $.ajax({  
+      type: 'POST',  
+      url: 'php/getCountry.php',
+      dataType: 'json',
+      data: {
+          countryCode: 'country',
+
+      }, 
+  })   
+      .done((result)=> {  
+      console.log("🚀 ~ file: script.js ~ line 239 ~ .done ~ result", result)
+        
+          console.log(result);
+          
+          map.on('locationfound', (event,s)=>{
+              console.log('locationfound',event,s);
+          });
+          map.on('locationerror', (event,s)=>{
+            console.log('locationerror',event,s)
+          });
+
+          map.locate({setView: true, maxZoom: 5});
+
+          $('#countrySelect').html('<option selected="true" disabled>Select a Country</option>');
+          
+          $.each(result.data, function(i) {
+
+              $('#countrySelect').append($('<option>', {
+                  text: result.data[i].name,
+                  value: result.data[i].code,
+              }));
+          });
+            
+      }).fail((err)=>{
+        console.log('something',err.responseText);
+        handleFail();
+      });
+     
+  };
+
+
 //Find the user location and uses it to locate country on the map
 const jumpToUserLocation = () => {
-  //Check to see if user's browser supports navigator, although if it doesn't user probably has bigger issues than my app not working
+  //Check to see if user's browser supports navigator
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
+     
         //Save the lat & long and pass it to the function to get the country
         const { longitude, latitude } = position.coords;
-        //Store the coors in a global to be used later to calculate distances
+        //Store the coords in a global to be used later to calculate distances
         userCoords = {
           longitude: longitude,
           latitude: latitude,
@@ -260,8 +303,8 @@ const jumpToUserLocation = () => {
 };
 
 //Event triggered when a country is selected from the searchbar
-const handleSearchbarChange = (event, ui) => {
-  const country = ui.item.value;
+const handleSearchbarChange = (event, ui) => { // Look at https://api.jqueryui.com/autocomplete/#event-select
+  const country = ui.item.value; 
   adjustFontToFitSearchbar(country);
   selectNewCountry(country, 'name');
 };
@@ -269,27 +312,28 @@ const handleSearchbarChange = (event, ui) => {
 //Adjusting font height to make sure country name fits the searchbar
 const adjustFontToFitSearchbar = (country) => {
   if (country.length > 25) {
-    $('#countrySearch').css('font-size', '0.6em');
+    $('#countrySelect').css('font-size', '0.6em');
   } else if (country.length > 15) {
-    $('#countrySearch').css('font-size', '1em');
+    $('#countrySelect').css('font-size', '1em');
   } else {
-    $('#countrySearch').css('font-size', '1.3em');
+    $('#countrySelect').css('font-size', '1.3em');
   }
 };
 
 //Function to handle map click
 const getCountryFromClick = (event) => {
-  const { lat, lng } = event.latlng;
+  const { lat, lng } = event.latlng; //deconstructing. Long form : const lat = event.latlng.lat; const lng = event.latlng.lng;
   getCountryFromCoords(lat, lng);
 };
-
+/*
 //Associate the autocomplete field with the list of countries and set the function to be triggered when a country is selected
 $('#countrySearch').autocomplete({
   source: countryList,
   minLength: 0,
   select: handleSearchbarChange,
-  position: { my: 'top', at: 'bottom', of: '#countrySearch' },
+  position: { my: 'top', at: 'bottom', of: '#countrySearch' },  // this means the seach results when autocompleting where it is posiitioned relative to the search bar which has the id of countrySearch. Look at https://api.jqueryui.com/position/
 });
+*/
 
 //Creating a pop up when a monument marker is clicked
 const infoPopup = (event) => {
@@ -320,7 +364,8 @@ const infoPopup = (event) => {
   marker.getWeatherInfo();
 };
 
-//Remove Loading Screen
+/*
+//Remove Loading Screen // take this off. There is no loading screen.
 const removeLoader = () => {
   //Check if a country has been loaded, if so then remove loading screen. Otherwise keep checking at short intervals until it has.
   if (countryOutline) {
@@ -333,18 +378,20 @@ const removeLoader = () => {
   }
 };
 let checkInterval = setInterval(removeLoader, 50);
+*/
 
 //When HTML is rendered...
 $(document).ready(() => {
   jumpToUserLocation();
 
-  removeLoader();
+ // removeLoader();
 
   //Populate list of countries
-  getCountryList();
+  loadCountrySelect();
+
 
   //Clear the searchbar of text when it is clicked for a smoother experience
-  $('#countrySearch').click(() => $('#countrySearch').val(''));
+  $('#countrySelect').click(() => $('#countrySelect').val(''));
 
   //Change country based on map click
   map.on('click', getCountryFromClick);
@@ -367,3 +414,4 @@ $(document).ready(() => {
     map.addLayer(monumentMarkers);
   });
 });
+
