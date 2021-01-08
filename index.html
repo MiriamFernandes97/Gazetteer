@@ -17,20 +17,21 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@1,500&display=swap" rel="stylesheet">
 
- <!-- CSS files -->
+<!-- CSS files -->
     <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="./styles/style.min.css" />
+    <!-- <link rel="stylesheet" href="./styles/style.min.css" />-->
+    <link rel="stylesheet" href="./styles/style.css" />
     <link rel="stylesheet" href="./libs/leaflet/leaflet.min.css" />
     <link rel="stylesheet" href="./libs/jqueryui/jquery-ui.min.css" />
     <link rel="stylesheet" href="./libs/fontawesome/fontawesome.min.css" />
     <link rel="stylesheet" href="./libs/fontawesome/solid.min.css" type="text/css" />
-    <link  rel="stylesheet"  href="./libs/leaflet-extra-markers/leaflet.extra-markers.min.css" type="text/css" />
+    <link rel="stylesheet" href="./libs/leaflet-extra-markers/leaflet.extra-markers.min.css" type="text/css" />
     <link rel="stylesheet" href="./libs/markercluster/MarkerCluster.css" type="text/css" />
 
   </head>
 
   <body class="full-height">
-   
+   <!--Change the format-->
      <div class="navbar navbar-expand-lg bg-dark navbar-dark navbar-fixed-top">
       <button
         class="navbar-toggler text-light border-danger badge"
@@ -53,14 +54,17 @@
       </ul>
     </div>
 
-    <div id="search">
-      <input
-        type="type"
-        id="countrySearch"
-        placeholder="Search..."
-        class="bg-dark text-light text-center border-light"
-      />
-    </div>
+<div id="search">
+    
+  
+   <select id="countrySelect" name="country" required=""></select>
+     
+  <!--  This was there before ====> <input type="type" id="countrySearch" placeholder="Search..." class="bg-dark text-light text-center border-light" />
+       
+    <datalist id='countryList'> 
+
+    </datalist>
+    --> 
 
     <div class="container-fluid fill-height bg-dark">
       <div class="row bg-dark" id="map">
@@ -213,14 +217,18 @@
     </div>
 
 <!--Scripts-->
-    <script src="./libs/leaflet/leaflet.js"></script>
     <script src="./libs/jquery/jquery.min.js"></script>
     <script src="./libs/jqueryui/jquery-ui.min.js"></script>
+    <script src="./libs/leaflet/leaflet.js"></script>
     <script src="./libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="./libs/leaflet-extra-markers/leaflet.extra-markers.min.js"></script>
     <script src="./libs/markercluster/leaflet.markercluster.min.js"></script>
-    <script src="./scripts/country.min.js"></script>
-    <script src="./scripts/point-of-interest.min.js"></script>
-    <script src="./scripts/script.min.js"></script>
+   <!-- <script src="./scripts/country.min.js"></script>-->
+   <!-- <script src="./scripts/point-of-interest.min.js"></script>-->
+  <!--  <script src="./scripts/script.min.js"></script>-->
+  <script src="./scripts/script.js"></script>
+  <script src="./scripts/country.js"></script>
+  <script src="./scripts/point-of-interest.js"></script>
+
   </body>
 </html>
