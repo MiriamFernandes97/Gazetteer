@@ -386,7 +386,7 @@ $(document).ready(() => {
 
  // removeLoader();
 
-  //Populate list of countries
+  //Populate list of countries 
   loadCountrySelect();
 
 
