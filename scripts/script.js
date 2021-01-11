@@ -146,7 +146,7 @@ const getCountryInfo = (countryCode) => {
 const selectNewCountry = (country, type) => {
   const start = Date.now();
 
-  $.ajax({// posting this info to the php file and getting the info from the api call in the php file anf returning it to us.
+  $.ajax({// posting this info to the php file and getting the info from the api call in the php file and returning it to us.
     url: 'php/getPolygon.php',
     type: 'POST',
     dataType: 'json',
@@ -223,10 +223,43 @@ const getCountryFromCoords = (latitude, longitude) => {
 
 };
 
-// Populate Select
 
+// Error handler
+function onLocationError(e) {
+
+  alert(e.message);
+}
+
+function onLocationFound(e) {
+
+  console.log(e);
+
+  $.ajax({
+      type: 'POST',
+      url: 'php/getCountryFromCoords.php',
+      dataType: 'json',
+      data: {
+          lat: e['latlng']['lat'],
+          lng: e['latlng']['lng']
+      },
+      success: function(result){
+          console.log(result);
+
+          $('#dropdownCountry').val(result.data.countryCode).change();
+
+      },
+
+      error: function(jqXHR, textStatus, errorThrown){
+          alert(`${textStatus} error`);
+      }
+
+  });
+
+}
+
+// Populate Select
 const loadCountrySelect =()=>{
-  console.log('loadCountrySelect');
+//  console.log('loadCountrySelect'); // for checking if loadCountrySelect was working.
 
   $.ajax({  
       type: 'POST',  
@@ -238,17 +271,23 @@ const loadCountrySelect =()=>{
       }, 
   })   
       .done((result)=> {  
-      console.log("🚀 ~ file: script.js ~ line 239 ~ .done ~ result", result)
+      //console.log("🚀 ~ file: script.js ~ line 239 ~ .done ~ result", result) // for checking.
         
           console.log(result);
           
-          map.on('locationfound', (event,s)=>{
-              console.log('locationfound',event,s);
-          });
-          map.on('locationerror', (event,s)=>{
-            console.log('locationerror',event,s)
-          });
+          map.on('locationfound',onLocationFound);
 
+          /*
+          (event,s)=>{
+              console.log('locationfound',event,s); // for checking.
+          }
+          */
+          map.on('locationerror',onLocationError);
+
+          /*(event,s)=>{ 
+            console.log('locationerror',event,s) // for checking.
+          }
+          */
           map.locate({setView: true, maxZoom: 5});
 
           $('#countrySelect').html('<option selected="true" disabled>Select a Country</option>');
@@ -267,6 +306,7 @@ const loadCountrySelect =()=>{
       });
      
   };
+
 
 
 //Find the user location and uses it to locate country on the map

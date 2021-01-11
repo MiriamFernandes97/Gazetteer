@@ -1,6 +1,13 @@
 <?php
+
+//this is for checking errors
+ini_set('display_errors', 'On');
+
+error_reporting(E_ALL);
+
 $url = "http://api.geonames.org/getJSON?geonameId=".$_REQUEST['geonameId']."&username=miriam97";
 
+//geonameId is 6295630
 $ch = curl_init();
 
 
@@ -18,7 +25,7 @@ $ch = curl_init();
     $output['status']['code'] = "200";
     $output['status']['name'] = "ok";
 	
-    $output['data'] = $decode;
+    $output['data'] = $decode['wikipediaURL'];
     
     
     header('Content-Type: application/json; charset=UTF-8');

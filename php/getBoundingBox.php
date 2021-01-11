@@ -1,23 +1,31 @@
 <?php
 
-$url = "http://api.geonames.org/countryInfoJSON?country=".$_REQUEST['countryCode']."&username=miriam97";
+//this is for checking errors
+ini_set('display_errors', 'On');
+
+error_reporting(E_ALL);
+
+
+$url = "http://api.geonames.org/countryInfoJSON?formatted=true&country=".$_REQUEST['country']."&username=miriam97&style=full";
+
+//it was requesting countryCode before.
 
 $ch = curl_init();
 
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_URL,$url);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_URL,$url);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     
-    $result=curl_exec($ch);
+$result=curl_exec($ch);
 
-	curl_close($ch);
-	$decode = json_decode($result,true);	
+curl_close($ch);
+$decode = json_decode($result,true);	
 
-    $output['status']['code'] = "200";
-	$output['status']['name'] = "ok";
+$output['status']['code'] = "200";
+$output['status']['name'] = "ok";
 
 	
-    $output['data'] = $decode['geonames'];
+$output['data'] = $decode['geonames'];
 
 
 

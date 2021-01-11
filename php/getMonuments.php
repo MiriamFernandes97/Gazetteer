@@ -1,6 +1,15 @@
 <?php
 
-$url = "http://api.geonames.org/searchJSON?country=".$_REQUEST['countryCode']."&countryBias=".$_REQUEST['countryCode']."&featureCode=MNMT&maxRows=10&orderby=relevance&username=miriam97";
+//this is for checking errors
+ini_set('display_errors', 'On');
+
+error_reporting(E_ALL);
+
+$url = "http://api.geonames.org/searchJSON?formatted=true&country=".$_REQUEST['country']."&countryBias=".$_REQUEST['countryBias']. '&maxRows=10&featureCode=MNMT&lang=en&username=miriam97&style=full';
+
+//it was countryCode before.
+
+//http://localhost/Gazetteer/php/getMonuments.php?formatted=true&country=UK&countryBias=UK&maxRows=10&featureCode=MNMT&lang=en&username=miriam97&style=full
 
 $ch = curl_init();
 

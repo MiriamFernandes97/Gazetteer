@@ -1,8 +1,13 @@
 <?php
 
+//this is for checking errors
+ini_set('display_errors', 'On');
+
+error_reporting(E_ALL);
+
 $appId="048d2f277161c737361281a06008b561";
 
-$url = "https://api.openweathermap.org/data/2.5/onecall?lat=".$_REQUEST['latitude']."&lon=".$_REQUEST['longitude']."&exclude=hourly,minutely&units=metric&appid=" . $appId;
+$url = "https://api.openweathermap.org/data/2.5/onecall?lat=".$_REQUEST['lat']."&lon=".$_REQUEST['lon']."&exclude=hourly,minutely&units=metric&appid=" . $appId;
 
 $ch = curl_init();
 
@@ -22,7 +27,7 @@ $ch = curl_init();
 	$output['status']['name'] = "ok";
 
 	
-    $output['data'] = $decode;
+    $output['data'] = $decode['daily'];
     
 	
 	header('Content-Type: application/json; charset=UTF-8');

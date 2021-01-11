@@ -40,7 +40,7 @@ class Country {
           svg: true,
           prefix: 'fa',
         });
-        const capitalMarker = L.ExtraMarkers.icon({
+        const capitalMarker = L.ExtraMarkers.icon({ // the capital has a different colored marker.
           icon: ' fa-location-arrow',
           markerColor: '#2C95C9',
           shape: 'star',
@@ -61,7 +61,7 @@ class Country {
               capital: true,
               geonameId: city.geonameId,
             }).addTo(cityLayer);
-            newMarker.on('click', infoPopup);
+            newMarker.on('click', infoPopup); // there is a different icon for city which is the capital.
           } else {
             const newMarker = L.marker([city.lat, city.lng], {
               icon: marker,
@@ -72,7 +72,7 @@ class Country {
               longitude: city.lng,
               geonameId: city.geonameId,
             }).addTo(cityLayer);
-            newMarker.on('click', infoPopup);
+            newMarker.on('click', infoPopup);// there is a different icon for the other cities which are not the capital.
           }
         });
       })
@@ -81,7 +81,7 @@ class Country {
         $('#modalBody').html(
           'Unfortunately there was an error fetching city information. Please try again or select a different country.'
         );
-        $('#infoModal').modal();
+        $('#infoModal').modal(); // This creates a modal in jQuery. A modal is a popup window.
       });
   }
 
@@ -153,8 +153,8 @@ class Country {
             radius: Math.pow(quake.magnitude, 3) * 500,
           }).addTo(earthquakeLayer);
 
-          newQuake.bindPopup(
-            `Magnitude: ${quake.magnitude} <br> Date: ${quake.datetime}`
+          newQuake.bindPopup( // .bindPopup is a popup method from the leaflet library. It binds what happens when you click on the popup icon.
+            `Magnitude: ${quake.magnitude} <br> Date: ${quake.datetime}`  // this is what shows when you click on the earthquake icon.
           );
         });
       })
@@ -179,8 +179,8 @@ class Country {
     })
       .done((result) => {
         //Set limits for the country's bounding box
-        const { north, south, east, west } = result['data'][0];
-        this.getEarthquakes(north, south, east, west);
+        const { north, south, east, west } = result['data'][0]; // this is deconstructing. it is already assuming that result has a data property and starting from the beginning.
+        this.getEarthquakes(north, south, east, west); // The bounding box is for the information. Wiki, forecast,weather,etc.
       })
       .fail(() => {
         $('#modalTitle').html(`Error`);

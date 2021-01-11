@@ -1,6 +1,19 @@
 <?php
 
-$url = "https://restcountries.eu/rest/v2/alpha/".$_REQUEST['countryCode'];
+//this is for checking errors
+ini_set('display_errors', 'On');
+
+error_reporting(E_ALL);
+
+$url = "https://restcountries.eu/rest/v2/alpha/".$_REQUEST['alpha2Code'];
+
+//https://restcountries.eu/rest/v2/alpha/{code}
+//https://restcountries.eu/rest/v2/alpha/col
+//http://restcountries.eu/rest/v2/alpha/COL
+
+// Below is what worked when testing it in the browser along with the url above:
+//==> http://localhost/Gazetteer/php/getCountryInfo.php?alpha2Code=GB
+
 
 $ch = curl_init();
 

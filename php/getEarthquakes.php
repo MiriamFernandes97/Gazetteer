@@ -1,9 +1,10 @@
 <?php
 
+//this is for checking errors
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 
- $url = 'http://api.geonames.org/earthquakesJSON?north='.$_REQUEST['north'].'&south='.$_REQUEST['south'].'&east='.$_REQUEST['east'].'&west='.$_REQUEST['west'].'&maxRows=10&username=miriam97';
+$url = 'http://api.geonames.org/earthquakesJSON?north='.$_REQUEST['north'].'&south='.$_REQUEST['south'].'&east='.$_REQUEST['east'].'&west='.$_REQUEST['west'].'&maxRows=10&username=miriam97';
 
 $ch = curl_init();
 

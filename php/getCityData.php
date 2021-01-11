@@ -1,6 +1,13 @@
 <?php
-$url = "http://api.geonames.org/searchJSON?country=".$_REQUEST['countryCode']."&countryBias=".$_REQUEST['countryCode']."&featureClass=P&maxRows=10&orderby=population&username=miriam97";
 
+//this is for checking errors
+ini_set('display_errors', 'On');
+
+error_reporting(E_ALL);
+
+
+$url = "http://api.geonames.org/searchJSON?country=".$_REQUEST['country']."&countryBias=".$_REQUEST['countryBias']."&featureClass=P&maxRows=10&orderby=population&username=miriam97";
+//used to be country= countryCode and countryBias = countryCode.
 $ch = curl_init();
 
 $ch = curl_init();

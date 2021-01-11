@@ -1,5 +1,12 @@
 <?php
-$url = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext&exintro&redirects=1&exsentences=1&titles=".$_REQUEST['title'];
+
+//this is for checking errors
+ini_set('display_errors', 'On');
+
+error_reporting(E_ALL);
+
+
+$url = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=' .$_REQUEST['title']; 
 
 $ch = curl_init();
 

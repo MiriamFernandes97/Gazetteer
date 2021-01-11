@@ -15,12 +15,12 @@ class PointOfInterest {
     return deg * (Math.PI / 180);
   }
 
-  //Calculate distance based on coordinates - Stolen from somebody who is much better at maths than me
+  //Calculate distance based on coordinates
   getDistanceFromLatLonInKm(lat1, lon1) {
     const R = 6371; // Radius of the earth in km
     const dLat = this.deg2rad(this.latitude - lat1);
     const dLon = this.deg2rad(this.longitude - lon1);
-    const a =
+    const a = 
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(this.deg2rad(lat1)) *
         Math.cos(this.deg2rad(this.latitude)) *
@@ -42,12 +42,12 @@ class PointOfInterest {
       },
     })
       .then((result) => {
-        const data = result['data'];
+        const data = result['data']; // data is a property of the object results. The data has all the information returned from the Geonames API
         this.timeZone = data.timezone.timeZoneId;
         this.wikiUrl = data.wikipediaURL;
-        const title = this.wikiUrl.split('/')[2];
-        this.displayInfo();
-        $.ajax({
+        const title = this.wikiUrl.split('/')[2]; // this is because you want the title(which is after two 2 /'s) It is this.wikiUrl.split because we are trying to get the title of the wiki article from the wiki url. The url is split with /'s and the normal format is tha the title comes after two /'s.
+        this.displayInfo(); // this is to display the info from the url.
+        $.ajax({ // this AJAX call is to the php routine to get the wiki summary from the above Wiki url.
           url: 'php/getWikiSummary.php',
           dataType: 'json',
           type: 'POST',
@@ -56,8 +56,8 @@ class PointOfInterest {
           },
         })
           .done((result) => {
-            const data = Object.values(result['data'])[0];
-            const extract = data['extract'];
+            const data = Object.values(result['data'])[0]; // But why was Object used?
+            const extract = data['extract']; // this is to go to the data obj and look for the extract property.
             //Extracts have '(listen)' where the wikipedia sound button would be, remove it
             const regex = /\(listen\)/;
             this.cleanExtract = extract.replace(regex, '');
@@ -76,7 +76,7 @@ class PointOfInterest {
   //Add wiki details to the modal
   displayWikiDetails() {
     $('#modalBody').html(
-      `${this.cleanExtract}<br><a href=https://${this.wikiUrl} target="_blank">Full Wikipedia Article</a>`
+      `${this.cleanExtract}<br><a href=https://${this.wikiUrl} target="_blank">Full Wikipedia Article</a>` // this displays the link to the wiki article.
     );
   }
 
@@ -109,7 +109,7 @@ class PointOfInterest {
         longitude: this.longitude,
       },
     }).done((result) => {
-      const data = result.data;
+      const data = result.data; // we just want the data from result object.
       this.currentWeather = data.current.weather[0];
       this.currentTemp = data.current.temp;
       this.humidity = data.current.humidity;
@@ -130,15 +130,15 @@ class PointOfInterest {
       //Make sure the correct day is displayed for the timezone
       const dayOfWeek = date.toLocaleString('en-GB', {
         timeZone: this.timeZone,
-        weekday: 'long',
+        weekday: 'long', // full form of the names of the days
       });
 
       $(`#forecastImg${i}`).attr(
         'src',
-        `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`
+        `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png` // setting the src attribute of the forecast image to the openWeather url with the first entry of the weather as the icon.
       );
       $(`#forecast${i}`).html(
-        `<li>${dayOfWeek}</li><li>${
+        `<li>${dayOfWeek}</li><li>${ 
           day.weather[0].description
         }</li><li>Min Temp:&nbsp;${day.temp.min.toFixed()}&#8451;</li><li>Max Temp:&nbsp;${day.temp.max.toFixed()}&#8451;</li>`
       );
@@ -147,9 +147,9 @@ class PointOfInterest {
     });
 
     //Display current weather info for location
-    $('#weatherImage').attr(
+    $('#weatherImage').attr( // this is the weather button.
       'src',
-      `https://openweathermap.org/img/wn/${this.currentWeather.icon}@2x.png`
+      `https://openweathermap.org/img/wn/${this.currentWeather.icon}@2x.png` // this is to assign the right icon according to the weather prediction.
     );
     $('#weatherModalList').html(
       `<li>${
@@ -161,23 +161,23 @@ class PointOfInterest {
   }
 }
 
-class Monument extends PointOfInterest {
-  constructor(latitude, longitude, geonameId, name) {
+class Monument extends PointOfInterest { // this is because monument has the same properties as the Point of Interest parent class
+  constructor(latitude, longitude, geonameId, name) {  //this is to make monument objects.
     super(latitude, longitude, geonameId, name);
     this.type = 'monument';
   }
   //Add general info to the modal then display it
-  displayInfo() {
+  displayInfo() { // this is the info we want to display when you click on the monumnet icon.
     this.getTime();
-    $('#modalTitle').html(`${this.name}`);
+    $('#modalTitle').html(`${this.name}`); 
     $('#modalInfo').html(
       `<li>Current Time: &nbsp; ${this.time}</li><li>Latitude: &nbsp; ${this.latitude}</li><li>Longitude: &nbsp; ${this.longitude}</li><li>Distance from your location: &nbsp; ${this.distance}km</li>`
     );
     $('#wikiInfo').removeClass('show');
     $('#forecastInfo').removeClass('show');
-    $('#weatherInfo').removeClass('show');
-    $('#generalInfo').addClass('show');
-    $('#infoModal').modal();
+    $('#weatherInfo').removeClass('show'); //this is to remove  the class show from the element with the id of weatherInfo.
+    $('#generalInfo').addClass('show'); //this is to add the  class show to the element with id of generalInfo.
+    $('#infoModal').modal(); // this is to show the popup box.
   }
 }
 
@@ -196,7 +196,7 @@ class City extends PointOfInterest {
     $('#wikiInfo').removeClass('show');
     $('#forecastInfo').removeClass('show');
     $('#weatherInfo').removeClass('show');
-    $('#generalInfo').addClass('show');
+    $('#generalInfo').addClass('show'); // this is because it has to show the generalInfo first? So add the class show to element with id of generalInfo.
     $('#infoModal').modal();
   }
 }
