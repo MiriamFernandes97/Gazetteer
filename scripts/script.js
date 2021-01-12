@@ -148,15 +148,15 @@ const selectNewCountry = (country, type) => {
 
   $.ajax({// posting this info to the php file and getting the info from the api call in the php file and returning it to us.
     url: 'php/getPolygon.php',
-    type: 'POST',
-    dataType: 'json',
+    type: 'GET',
+    // dataType: 'json',
     data: {
       country: country,
       type: type,
     },
   })
     .done((result) => {
-      const countryCode = result['properties']['ISO_A3']; // setting the country code to be the ISO_A3 one from the .json file.
+      const countryCode = result['properties']['iso_a3']; // setting the country code to be the ISO_A3 one from the .json file.
       //If a polygon is already drawn, clear it
       if (countryOutline) {
         countryOutline.clearLayers();
