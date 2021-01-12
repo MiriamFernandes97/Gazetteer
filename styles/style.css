@@ -25,7 +25,7 @@ body {
   width: 100%;
 }
 
-
+/*Before
 #countrySearch {
   font-family: 'Asap', sans-serif;
   min-width: 270px;
@@ -42,6 +42,30 @@ body {
   background-color: #343a40;
   padding-bottom: 10px;
   border-bottom: 1px solid #6c757d;
+}
+*/
+
+#countrySelect {
+  font-family: 'Asap', sans-serif;
+  min-width: 270px;
+  width: 50vw;
+  height: 45px;
+  border-radius: 15px;
+  display: block;
+  margin: 0px auto;
+  outline: none;
+}
+
+
+#search {
+  background-color: #343a40;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #6c757d;
+}
+
+
+p.heading{
+  color: #f8f9fa;
 }
 
 .ui-autocomplete {
