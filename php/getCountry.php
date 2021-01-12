@@ -27,9 +27,9 @@ error_reporting(E_ALL);
 
         $temp = null;
 
-        $temp['code'] = $feature["properties"]['ISO_A3'];
+        $temp['code'] = $feature["properties"]['iso_a3'];
 
-        $temp['name'] = $feature["properties"]["ADMIN"];
+        $temp['name'] = $feature["properties"]["name"];
 
  
 

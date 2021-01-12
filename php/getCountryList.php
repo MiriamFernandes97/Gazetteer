@@ -14,8 +14,8 @@ $countryList = array();
 
 $output = $countries['features'];
 foreach($countries['features'] as $key => $val){
-    if($val['properties']["ISO_A3"] != "-99"){
-    array_push($countryList, $val['properties']['ADMIN']);
+    if($val['properties']["iso_a3"] != "-99"){
+    array_push($countryList, $val['properties']['name']);
 }
 }
 
