@@ -13,20 +13,23 @@ $countries = json_decode(file_get_contents($url), true);
 
 $output = $countries['features'];
 
+
 //this is for choosing which selector to use.
 
-if($_REQUEST['type'] == 'code'){ // it was 'code'
-    $selector = 'ISO_A3';
-}else{
-    $selector = 'ADMIN';
+if($_REQUEST['type'] == 'Feature'){ // it was 'code'
+    $selector = ['properties']['iso_a3']; 
+    $selector = ['properties']['name'];
+
 }
 
-foreach($output as $key => $val ){
-    if($val['properties'][$selector] == $_REQUEST['country']){
+foreach($output as $key => $val ){ // this means the output should be in in key value pairs.
+    if($val['properties']['name'] == $_REQUEST['country']){ 
         echo json_encode($val);
         break;
     }
     
 }
+
+
 
 ?>

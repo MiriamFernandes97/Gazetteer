@@ -156,7 +156,7 @@ const selectNewCountry = (country, type) => {
     },
   })
     .done((result) => {
-      const countryCode = result['properties']['ISO_A3'];
+      const countryCode = result['properties']['ISO_A3']; // setting the country code to be the ISO_A3 one from the .json file.
       //If a polygon is already drawn, clear it
       if (countryOutline) {
         countryOutline.clearLayers();
