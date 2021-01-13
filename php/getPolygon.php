@@ -27,7 +27,7 @@ if($_REQUEST['type'] == 'code'){  // if the type ends up being in a code format,
 
 
 
-foreach($features as  $val ){ // this means the features should be in in key value pairs.
+foreach($features as  $val ){ //this means that features will be stored as values. [it was as key value pairs before.]
     if($val['properties'][$selector] == $_REQUEST['country']){ 
         echo json_encode($val); // to convert the PHP assoc array to JSON.
         break;
