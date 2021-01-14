@@ -8,6 +8,8 @@ error_reporting(E_ALL);
 
 $url = "http://api.geonames.org/searchJSON?country=".$_REQUEST['country']."&countryBias=".$_REQUEST['countryBias']."&featureClass=P&maxRows=10&orderby=population&username=miriam97";
 //used to be country= countryCode and countryBias = countryCode.
+//http://localhost/Gazetteer/php/getCityData.php?country=CA&countryBias=CA&username=miriam97
+
 $ch = curl_init();
 
 $ch = curl_init();

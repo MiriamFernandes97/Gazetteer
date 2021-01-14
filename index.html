@@ -2,7 +2,7 @@
 <html lang="en" class="full-height">
   <head>
   <meta charset="UTF 8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="author" content="Miriam Fernandes">
   <meta name="description" content="Gazeetteer Application using cURL,PHP,AJAX,and JSON,jQuery">
 
@@ -18,12 +18,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@1,500&display=swap" rel="stylesheet">
 
 <!-- CSS files -->
-    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css" />
-    <!-- <link rel="stylesheet" href="./styles/style.min.css" />-->
-    <link rel="stylesheet" href="./styles/style.css" />
-    <link rel="stylesheet" href="./libs/leaflet/leaflet.min.css" />
-    <link rel="stylesheet" href="./libs/jqueryui/jquery-ui.min.css" />
-    <link rel="stylesheet" href="./libs/fontawesome/fontawesome.min.css" />
+    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css"  type="text/css"/>
+    <!-- <link rel="stylesheet" href="./styles/style.min.css"  type="text/css" />-->
+    <link rel="stylesheet" href="./styles/style.css"  type="text/css" />
+    <link rel="stylesheet" href="./libs/leaflet/leaflet.min.css"  type="text/css"/>
+    <link rel="stylesheet" href="./libs/jqueryui/jquery-ui.min.css"  type="text/css"/>
+    <link rel="stylesheet" href="./libs/fontawesome/fontawesome.min.css"  type="text/css"/>
     <link rel="stylesheet" href="./libs/fontawesome/solid.min.css" type="text/css" />
     <link rel="stylesheet" href="./libs/leaflet-extra-markers/leaflet.extra-markers.min.css" type="text/css" />
     <link rel="stylesheet" href="./libs/markercluster/MarkerCluster.css" type="text/css" />
@@ -44,7 +44,7 @@
       </button>
       <img src="favicon.png" width="150" height="100">
       
-      <h1 id="site" style="color:beige; padding:20px;">Gazetteer</h1>
+      <h1 style="color:beige; padding:20px;">Gazetteer</h1>
 
       <ul
         class="collapse navbar-collapse text-light list-unstyled"
@@ -61,19 +61,17 @@
 <div id="search">
     
   
-   <select id="countrySelect" name="country" required=""></select>
+   <select id="countrySelect"  class="bg-dark text-light text-center border-light" name="country" required="" placeholder="Select a country..."></select>
      
-  <!--  This was there before ====> <input type="type" id="countrySearch" placeholder="Search..." class="bg-dark text-light text-center border-light" />
-       
-    <datalist id='countryList'> 
-
-    </datalist>
-    --> 
+  <!--  This was there before ====> <input type="type" id="countrySearch" placeholder="Search..." class="bg-dark text-light text-center border-light" />--> 
 
     <div class="container-fluid fill-height bg-dark">
-      <div class="row bg-dark" id="map">
+
+      <div id="map" class="row bg-dark"  style="height:800px;">
         <div class="controlsdiv"></div>
+        
       </div>
+
     </div>
 
     <footer>

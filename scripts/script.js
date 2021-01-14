@@ -6,6 +6,7 @@ let countryOutline;
 
 let weatherUrl;//???
 
+
 //Setting the details for the different map displays
 
 const light = L.tileLayer(
@@ -67,16 +68,20 @@ const precipitation = L.tileLayer(weatherUrl, { // doesn't work
 
 
 //Initializing the map and setting its default layer to the dark theme which was defined above.
-const map = L.map('map', {
-  layers: [dark],
-});
+
+const map = L.map('map', {center: [39.73, -104.99],zoom: 10,zoomControl: false, layers: [dark]});// dark, satellite,earthAtNight]});//,temp,precipitation]});
+
+
 
 //Adding the different tile layers to the control button and adding the button/s to the map
 const baseMaps = {
   Light: light,
   Dark: dark,
-  Satellite: satellite,
+  Satellite: satellite, 
+  
   'Earth At Night': earthAtNight,
+  Temperature:temp,
+  Precipitation:precipitation
 };
 
 const weatherOverlays = { // doesn't work bec of temp & precip.
@@ -84,6 +89,11 @@ const weatherOverlays = { // doesn't work bec of temp & precip.
   Precipitation: precipitation,
 };
 L.control.layers(baseMaps, weatherOverlays).addTo(map); 
+
+let countryDropdown = $('#countrySelect');
+
+    countryDropdown.append('<option selected="true" disabled>Select a Country</option>');
+
 
 
 //Initializing the layer groups to be populated with markers
@@ -117,7 +127,7 @@ const getCountryInfo = (countryCode) => {
     dataType: 'json',
     type: 'POST',
     data: {
-      countryCode: countryCode,
+      alpha2Code: countryCode,
     },
   }).done((result) => {
     const c = result.data;
@@ -193,7 +203,7 @@ const getCountryFromCoords = (latitude, longitude) => {
     dataType: 'json',
     data: {
       lat: latitude,
-      long: longitude,
+      lng: longitude,
     },
   })
     .done((result) => {
@@ -223,7 +233,7 @@ const getCountryFromCoords = (latitude, longitude) => {
 
 };
 
-
+// for select dropdown
 // Error handler
 function onLocationError(e) {
 
@@ -245,7 +255,7 @@ function onLocationFound(e) {
       success: function(result){
           console.log(result);
 
-          $('#dropdownCountry').val(result.data.countryCode).change();
+          $('#countrySelect').val(result.data.countryCode).change();
 
       },
 
@@ -317,7 +327,7 @@ const jumpToUserLocation = () => {
       (position) => {
      
         //Save the lat & long and pass it to the function to get the country
-        const { longitude, latitude } = position.coords;
+        const { longitude, latitude } = position.coords; 
         //Store the coords in a global to be used later to calculate distances
         userCoords = {
           longitude: longitude,

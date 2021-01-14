@@ -9,6 +9,7 @@ error_reporting(E_ALL);
 $url = "http://api.geonames.org/countryInfoJSON?formatted=true&country=".$_REQUEST['country']."&username=miriam97&style=full";
 
 //it was requesting countryCode before.
+//http://localhost/Gazetteer/php/getBoundingBox.php?country=UK&username=miriam97
 
 $ch = curl_init();
 

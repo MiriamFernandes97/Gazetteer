@@ -25,26 +25,6 @@ body {
   width: 100%;
 }
 
-/*Before
-#countrySearch {
-  font-family: 'Asap', sans-serif;
-  min-width: 270px;
-  width: 50vw;
-  height: 45px;
-  border-radius: 15px;
-  display: block;
-  margin: 0px auto;
-  outline: none;
-}
-
-
-#search {
-  background-color: #343a40;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #6c757d;
-}
-*/
-
 #countrySelect {
   font-family: 'Asap', sans-serif;
   min-width: 270px;
@@ -81,8 +61,6 @@ p.heading{
   border: 1px solid #6c757d;
 }
 
-
-
 .info {
   margin-right: 1.2em;
 }
@@ -92,11 +70,11 @@ p.heading{
 }
 
 ::placeholder {
-  color: #6c757d;
+  color: #a3a8ac;
 }
 
 #map {
-  height: 100%;
+  height:100%;
   min-width: 100vw;
 }
 
@@ -107,8 +85,6 @@ footer {
 #options {
   height: 28px;
 }
-
-
 
 .list-group-item {
   background-color: #6c757d;
@@ -172,8 +148,6 @@ footer {
   font: 12px 'Asap', sans-serif, Helvetica, sans-serif;
   color: #f8f9fa;
 }
-
-
 
 @media (min-width: 900px) {
   .btn-secondary {

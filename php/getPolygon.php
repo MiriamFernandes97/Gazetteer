@@ -35,4 +35,8 @@ foreach($features as  $val ){ //this means that features will be stored as value
     
 }
 
+
+// to test it out in the browser http://localhost/Gazetteer/php/getPolygon.php?country=Bahamas&type=name
+// or: http://localhost/Gazetteer/php/getPolygon.php?country=GBR&type=iso_a3
+
 ?>

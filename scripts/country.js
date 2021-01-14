@@ -22,14 +22,16 @@ class Country {
   }
   //Fetch most populous cities for active country and add markers to the city layer group
   getCities() {
-    //Clear existing city markers from previous country
+    //Clear existing city markers from the previous country
+    //check getCity again.
     cityLayer.clearLayers();
     $.ajax({
       url: 'php/getCityData.php',
       dataType: 'json',
       type: 'POST',
       data: {
-        countryCode: this.alpha2Code,
+        country:this.alpha2Code,//
+        countryBias: this.alpha2Code,
       },
     })
       .done((result) => {
@@ -95,7 +97,9 @@ class Country {
       dataType: 'json',
       type: 'POST',
       data: {
-        countryCode: this.alpha2Code,
+        country: this.alpha2Code,
+        countryBias:this.alpha2Code
+
       },
     })
       .done((result) => {
@@ -174,7 +178,7 @@ class Country {
       dataType: 'json',
       type: 'POST',
       data: {
-        countryCode: this.alpha2Code,
+        country:country,       // country: this.alpha2Code, // 
       },
     })
       .done((result) => {
