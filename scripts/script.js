@@ -51,7 +51,7 @@ const earthAtNight = L.tileLayer(
 );
 
 
-const precipitation = L.tileLayer('https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid=ecdd3db00553f4e381724e72bb3418e5', { 
+const precipitation = L.tileLayer('https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid={appId}', { 
   tileSize: 512,
   zoomOffset: -1,
   layer: 'precipitation_new',
@@ -60,7 +60,7 @@ const precipitation = L.tileLayer('https://tile.openweathermap.org/map/{layer}/{
   area:'worldwide'
 });
 
-const temp = L.tileLayer('https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid=ecdd3db00553f4e381724e72bb3418e5', { 
+const temp = L.tileLayer('https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid={appId}', { 
   tileSize: 512,
   minZoom: 2,
   zoomOffset: -1,
