@@ -8,6 +8,7 @@ error_reporting(E_ALL);
 $url = "http://api.geonames.org/getJSON?geonameId=".$_REQUEST['geonameId']."&username=miriam97";
 
 //geonameId is 6295630
+//http://localhost/Gazetteer/php/getWikiUrl.php?geonameId=6295630&username=miriam97
 $ch = curl_init();
 
 

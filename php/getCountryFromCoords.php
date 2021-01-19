@@ -7,6 +7,8 @@ error_reporting(E_ALL);
 
 $url ='http://api.geonames.org/countryCodeJSON?formatted=true&lat=' . $_REQUEST['lat'] . '&lng=' . $_REQUEST['lng'] . '&username=miriam97&style=full';
 
+// http://localhost/Gazetteer/php/getCountryFromCoords.php?lat=55&lng=-4
+
 	$ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

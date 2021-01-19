@@ -42,7 +42,7 @@
       >
         <span>Details </span>
       </button>
-      <img src="favicon.png" width="150" height="100">
+      <img id ="logo"src="favicon.png" width="150" height="100">
       
       <h1 style="color:beige; padding:20px;">Gazetteer</h1>
 
@@ -63,18 +63,16 @@
   
    <select id="countrySelect"  class="bg-dark text-light text-center border-light" name="country" required="" placeholder="Select a country..."></select>
      
-  <!--  This was there before ====> <input type="type" id="countrySearch" placeholder="Search..." class="bg-dark text-light text-center border-light" />--> 
-
     <div class="container-fluid fill-height bg-dark">
 
-      <div id="map" class="row bg-dark"  style="height:800px;">
+      <div id="map" class="row bg-dark"  style="height:900px;">
         <div class="controlsdiv"></div>
         
       </div>
 
     </div>
 
-    <footer>
+       
       <div
         class="btn-group btn-group-toggle fixed-bottom"
         data-toggle="buttons"
@@ -92,6 +90,9 @@
         </label>
       </div>
     </footer>
+
+    
+    <footer>  
 
     <div class="modal" tabindex="-1" id="infoModal">
       <div class="modal-dialog modal-dialog-centered">
@@ -162,10 +163,15 @@
                     <ul id="forecast6" class="forecastList"></ul>
                   </li>
                 </ul>
+                
               </div>
             </div>
           </div>
+
+       
+
           <div class="modal-footer bg-dark">
+            
             <button
               type="button"
               class="btn btn-secondary badge"
@@ -213,9 +219,24 @@
             >
               Close
             </button>
+
+            
           </div>
         </div>
       </div>
+
+      <!-- This is for a possible legend at the bottom right. 
+        
+        <div class="scale-details">
+        <div>Temperature, °C</div>
+        <div class="scale-gradient" style="width: 260px;"><div class="scale-dividers">
+          <div>-40</div><div>-20</div
+            ><div>0</div><div>20</div>
+            <div>40</div></div><div class="horizontal-gradient-line" style="background-image: linear-gradient(to right, rgb(159, 85, 181) 0%, rgb(44, 106, 187) 8.75%, rgb(82, 139, 213) 12.5%, rgb(103, 163, 222) 18.75%, rgb(142, 202, 240) 25%, rgb(155, 213, 244) 31.25%, rgb(172, 225, 253) 37.5%, rgb(194, 234, 255) 43.75%, rgb(255, 255, 208) 50%, rgb(254, 248, 174) 56.25%, rgb(254, 232, 146) 62.5%, rgb(254, 226, 112) 68.75%, rgb(253, 212, 97) 75%, rgb(244, 168, 94) 82.5%, rgb(244, 129, 89) 87.5%, rgb(244, 104, 89) 93.75%, rgb(244, 76, 73) 100%);">
+            </div>
+          </div>
+        </div> -->
+
     </div>
 
 <!--Scripts-->

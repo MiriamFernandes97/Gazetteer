@@ -30,8 +30,8 @@ class Country {
       dataType: 'json',
       type: 'POST',
       data: {
-        country:this.alpha2Code,//
-        countryBias: this.alpha2Code,
+        country:this.alpha2Code,
+        countryBias: this.alpha2Code
       },
     })
       .done((result) => {
@@ -145,7 +145,7 @@ class Country {
         south: south,
         east: east,
         west: west,
-      },
+      },k
     })
       .done((result) => {
         result['data'].forEach((quake) => {
@@ -172,13 +172,16 @@ class Country {
   }
 
   //Get bounding box of country from code then set the properties
+
+  //You have a number of markers on a map and you want the map to be displayed so that they all fit inside the viewport.
+  // So that the markers are put there dynamically.
   getBoundingBox() {
     $.ajax({
       url: 'php/getBoundingBox.php',
       dataType: 'json',
       type: 'POST',
       data: {
-        country:country,       // country: this.alpha2Code, // 
+        country:this.alpha2Code,       // country: this.alpha2Code, // 
       },
     })
       .done((result) => {

@@ -196,7 +196,8 @@ class City extends PointOfInterest {
     $('#wikiInfo').removeClass('show');
     $('#forecastInfo').removeClass('show');
     $('#weatherInfo').removeClass('show');
-    $('#generalInfo').addClass('show'); // this is because it has to show the generalInfo first? So add the class show to element with id of generalInfo.
+    $('#generalInfo').addClass('show'); // this is because it has to show the generalInfo first. So add the class show to element with id of generalInfo.
     $('#infoModal').modal();
   }
 }
+
