@@ -4,9 +4,6 @@ let userCoords = {};
 const countryList = [];
 let countryOutline;
 
-let weatherUrl;//???
-
-
 //Setting the details for the different map displays
 
 const light = L.tileLayer(
@@ -27,6 +24,7 @@ const dark = L.tileLayer(
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     subdomains: 'abcd',
     maxZoom: 19,
+    minZoom:1
   }
 );
 
@@ -53,24 +51,29 @@ const earthAtNight = L.tileLayer(
 );
 
 
-const temp = L.tileLayer(weatherUrl, { // doesn't work
+const precipitation = L.tileLayer('https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid=ecdd3db00553f4e381724e72bb3418e5', { 
   tileSize: 512,
-  zoomOffset: -1,
-  layer: 'temp_new',
-  minZoom: 2,
-});
-const precipitation = L.tileLayer(weatherUrl, { // doesn't work
-  tileSize: 512,
-  minZoom: 2,
   zoomOffset: -1,
   layer: 'precipitation_new',
+  minZoom: 2,
+  appId:'ecdd3db00553f4e381724e72bb3418e5',
+  area:'worldwide'
 });
+
+const temp = L.tileLayer('https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid=ecdd3db00553f4e381724e72bb3418e5', { 
+  tileSize: 512,
+  minZoom: 2,
+  zoomOffset: -1,
+  layer: 'temp_new',
+  appId:'ecdd3db00553f4e381724e72bb3418e5',
+  area:'worldwide'
+});
+
 
 
 //Initializing the map and setting its default layer to the dark theme which was defined above.
 
-const map = L.map('map', {center: [39.73, -104.99],zoom: 10,zoomControl: false, layers: [dark]});// dark, satellite,earthAtNight]});//,temp,precipitation]});
-
+const map = L.map('map', {center: [39.73, -104.99],zoom: 10,zoomControl: false, layers: [light]});// dark, satellite,earthAtNight]});//,temp,precipitation]});
 
 
 //Adding the different tile layers to the control button and adding the button/s to the map
@@ -78,17 +81,23 @@ const baseMaps = {
   Light: light,
   Dark: dark,
   Satellite: satellite, 
-  
   'Earth At Night': earthAtNight,
-  Temperature:temp,
-  Precipitation:precipitation
+  
 };
 
-const weatherOverlays = { // doesn't work bec of temp & precip.
+/* This was an attempt to put everything in the same layer to show at the same time.
+const infoOverlays={
+"Earthquakes":,
+"Cities":,
+"Monuments":
+};
+*/
+
+const weatherOverlays = { 
   Temperature: temp, 
   Precipitation: precipitation,
 };
-L.control.layers(baseMaps, weatherOverlays).addTo(map); 
+L.control.layers(baseMaps,weatherOverlays).addTo(map); 
 
 let countryDropdown = $('#countrySelect');
 
@@ -121,20 +130,23 @@ const getCountryList = () => {
 };
 
 //Getting the info for the country which was selected
-const getCountryInfo = (countryCode) => {
+const getCountryInfo = (code) => { // the parameter was countryCode before 
   $.ajax({
     url: 'php/getCountryInfo.php',
     dataType: 'json',
     type: 'POST',
     data: {
-      alpha2Code: countryCode,
+      alpha3Code: code, // the value was countryCode before. // The property name was alpha2code before 
     },
   }).done((result) => {
+
+    console.log(result);
+
     const c = result.data;
     //Use the returned info to create new Country class
     const activeCountry = new Country(
       c.name,
-      c.alpha2Code,
+      c.alpha3Code, // it was c.alpha2Code
       c.area,
       c.flag,
       c.capital,
@@ -144,8 +156,8 @@ const getCountryInfo = (countryCode) => {
     );
     //Display info and fetch & create markers for the cities, monuments, and earthquakes
     activeCountry.displayInfo();
-    activeCountry.getCities();
-    activeCountry.getMonuments();
+    // activeCountry.getCities();
+    // activeCountry.getMonuments();
     activeCountry.getBoundingBox();
   });
 };
@@ -156,28 +168,30 @@ const getCountryInfo = (countryCode) => {
 const selectNewCountry = (country, type) => {
   const start = Date.now();
 
-  $.ajax({// posting this info to the php file and getting the info from the api call in the php file and returning it to us.
+  $.ajax({ // posting this info to the php file and getting the info from the api call in the php file and returning it to us.
     url: 'php/getPolygon.php',
     type: 'GET',
     // dataType: 'json',
     data: {
       country: country,
-      type: type,
+      type: type, // it was type: type
     },
   })
     .done((result) => {
-      const countryCode = result['properties']['iso_a3']; // setting the country code to be the ISO_A3 one from the .json file.
+      const countryCode = result['properties']['iso_a3']; // setting the country code to be the iso_a3 one from the .json file.
+      console.log("🚀 ~ file: script.js ~ line 179 ~ .done ~ countryCode", countryCode)
+     
       //If a polygon is already drawn, clear it
-      if (countryOutline) {
-        countryOutline.clearLayers();
-      }
+    //   if (countryOutline) {
+    //     countryOutline.clearLayers();
+    //   }
       countryOutline = L.geoJSON(result, {
         style: {
           color: '#fd7e14',
         },
       }).addTo(map);
       map.fitBounds(countryOutline.getBounds());
-      getCountryInfo(countryCode);
+      getCountryInfo(code); // it was countryCode
 
       console.log(Date.now() - start);
     })
@@ -216,15 +230,14 @@ const getCountryFromCoords = (latitude, longitude) => {
         return;
       }
 
-      const alpha3Code = data['ISO_3166-1_alpha-3'];
+      const alpha3Code = data['iso_a3']; // const alpha3Code = data['ISO_3166-1_alpha-3'];
       
 
       //Only change value if a country was found for the location otherwise searchbar empties when ocean is clicked
       if (data.country) {
-        $('#countrySearch').val(data.country);
+        $('#countrySelect').val(data.country);
         adjustFontToFitSearchbar(data.country);
-        selectNewCountry(alpha3Code, 'code');
-
+        selectNewCountry(country, 'code'); //It was alpha3Code
       }
     })
     .fail(() => {
@@ -234,7 +247,7 @@ const getCountryFromCoords = (latitude, longitude) => {
 };
 
 // for select dropdown
-// Error handler
+// Error handler 
 function onLocationError(e) {
 
   alert(e.message);
@@ -276,28 +289,19 @@ const loadCountrySelect =()=>{
       url: 'php/getCountry.php',
       dataType: 'json',
       data: {
-          countryCode: 'country',
+          countryCode: 'country' 
 
       }, 
   })   
-      .done((result)=> {  
-      //console.log("🚀 ~ file: script.js ~ line 239 ~ .done ~ result", result) // for checking.
-        
+      .done((result)=> {          
           console.log(result);
           
           map.on('locationfound',onLocationFound);
 
-          /*
-          (event,s)=>{
-              console.log('locationfound',event,s); // for checking.
-          }
-          */
+         
           map.on('locationerror',onLocationError);
 
-          /*(event,s)=>{ 
-            console.log('locationerror',event,s) // for checking.
-          }
-          */
+          
           map.locate({setView: true, maxZoom: 5});
 
           $('#countrySelect').html('<option selected="true" disabled>Select a Country</option>');
@@ -306,7 +310,7 @@ const loadCountrySelect =()=>{
 
               $('#countrySelect').append($('<option>', {
                   text: result.data[i].name,
-                  value: result.data[i].code,
+                  value: result.data[i].code, 
               }));
           });
             
@@ -353,11 +357,16 @@ const jumpToUserLocation = () => {
 };
 
 //Event triggered when a country is selected from the searchbar
-const handleSearchbarChange = (event, ui) => { // Look at https://api.jqueryui.com/autocomplete/#event-select
-  const country = ui.item.value; 
+const handleSelectBarChange = (event, ui) => { // Look at https://api.jqueryui.com/autocomplete/#event-select
+  
+  const country = ui.item.value;
+
   adjustFontToFitSearchbar(country);
+
   selectNewCountry(country, 'name');
+
 };
+
 
 //Adjusting font height to make sure country name fits the searchbar
 const adjustFontToFitSearchbar = (country) => {
@@ -372,18 +381,13 @@ const adjustFontToFitSearchbar = (country) => {
 
 //Function to handle map click
 const getCountryFromClick = (event) => {
-  const { lat, lng } = event.latlng; //deconstructing. Long form : const lat = event.latlng.lat; const lng = event.latlng.lng;
+  const lat = event.latlng.lat;
+  const lng = event.latlng.lng;
+  
+  //const { lat, lng } = event.latlng; //deconstructing. Long form : const lat = event.latlng.lat; const lng = event.latlng.lng;
   getCountryFromCoords(lat, lng);
 };
-/*
-//Associate the autocomplete field with the list of countries and set the function to be triggered when a country is selected
-$('#countrySearch').autocomplete({
-  source: countryList,
-  minLength: 0,
-  select: handleSearchbarChange,
-  position: { my: 'top', at: 'bottom', of: '#countrySearch' },  // this means the seach results when autocompleting where it is posiitioned relative to the search bar which has the id of countrySearch. Look at https://api.jqueryui.com/position/
-});
-*/
+
 
 //Creating a pop up when a monument marker is clicked
 const infoPopup = (event) => {
@@ -414,34 +418,12 @@ const infoPopup = (event) => {
   marker.getWeatherInfo();
 };
 
-/*
-//Remove Loading Screen // take this off. There is no loading screen.
-const removeLoader = () => {
-  //Check if a country has been loaded, if so then remove loading screen. Otherwise keep checking at short intervals until it has.
-  if (countryOutline) {
-    $('#preloader')
-      .delay(100)
-      .fadeOut('slow', () => {
-        $(this).remove();
-      });
-    clearInterval(checkInterval);
-  }
-};
-let checkInterval = setInterval(removeLoader, 50);
-*/
-
 //When HTML is rendered...
 $(document).ready(() => {
   jumpToUserLocation();
 
- // removeLoader();
-
   //Populate list of countries 
   loadCountrySelect();
-
-
-  //Clear the searchbar of text when it is clicked for a smoother experience
-  $('#countrySelect').click(() => $('#countrySelect').val(''));
 
   //Change country based on map click
   map.on('click', getCountryFromClick);
@@ -463,5 +445,52 @@ $(document).ready(() => {
     map.removeLayer(cityLayer);
     map.addLayer(monumentMarkers);
   });
+
 });
+
+// extra bits 
+/*
+//Associate the autocomplete field with the list of countries and set the function to be triggered when a country is selected
+$('#countrySearch').autocomplete({
+  source: countryList,
+  minLength: 0,
+  select: handleSearchbarChange,
+  position: { my: 'top', at: 'bottom', of: '#countrySearch' },  // this means the seach results when autocompleting where it is posiitioned relative to the search bar which has the id of countrySearch. Look at https://api.jqueryui.com/position/
+});
+*/
+
+/*
+//Remove Loading Screen // take this off. There is no loading screen.
+const removeLoader = () => {
+  //Check if a country has been loaded, if so then remove loading screen. Otherwise keep checking at short intervals until it has.
+  if (countryOutline) {
+    $('#preloader')
+      .delay(100)
+      .fadeOut('slow', () => {
+        $(this).remove();
+      });
+    clearInterval(checkInterval);
+  }
+};
+let checkInterval = setInterval(removeLoader, 50);
+*/
+
+// map.on('locationfound',onLocationFound);
+
+//           /*
+//           (event,s)=>{
+//               console.log('locationfound',event,s); // for checking.
+//           }
+//           */
+//           map.on('locationerror',onLocationError);
+
+//           /*(event,s)=>{ 
+//             console.log('locationerror',event,s) // for checking.
+//           }
+//           */
+
+  //Clear the searchbar of text when it is clicked for a smoother experience
+  //$('#countrySelect').click(() => $('#countrySelect').val(''));
+
+   // removeLoader(); was in the document ready function.
 
