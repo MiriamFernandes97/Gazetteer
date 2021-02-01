@@ -73,6 +73,8 @@ const temp = L.tileLayer('https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y
 
 const map = L.map('map', {center: [39.73, -104.99],zoom:10,zoomControl: false, layers: [light]});
 
+//zoom control buttons
+L.control.zoom({position: 'topright'}).addTo(map);
 
 //Adding the different tile layers to the control button and adding the button/s to the map
 const baseMaps = {
@@ -277,7 +279,7 @@ $.ajax({
       },
       success: function(result){
         console.log(result.data);
-     console.log('E'); //check
+        console.log('E'); //check
 
           $('#countrySelect').val(result.data.countryCode).change(); // it was countryCode before // this is to change the countryCode to the one of the country that the user selects
          console.log(result.data.countryCode); // this prints GB
@@ -378,7 +380,7 @@ const jumpToUserLocation = () => { //this works.
     );
   } else {
     selectNewCountry('GB', 'code');
-  }
+     }
 };
 
 //Event triggered when a country is selected from the searchbar
@@ -492,7 +494,7 @@ $('#countrySelect').on('change',function(){
 
 
 
-    $('#earthquakeBtn').click(() => {
+  $('#earthquakeBtn').click(() => {
     // map.removeLayer(cityLayer);
     // map.removeLayer(monumentMarkers);
     earthquakeLayer.addTo(map);
