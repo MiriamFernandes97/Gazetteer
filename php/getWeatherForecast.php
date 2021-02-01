@@ -7,9 +7,10 @@ error_reporting(E_ALL);
 
 $appId="048d2f277161c737361281a06008b561";
 
-$url = "https://api.openweathermap.org/data/2.5/onecall?lat=".$_REQUEST['lat']."&lon=".$_REQUEST['lon']."&exclude=hourly,minutely&units=metric&appid=" . $appId;
+$url = "https://api.openweathermap.org/data/2.5/onecall?lat=".$_REQUEST['lat']."&lon=".$_REQUEST['lon']."&units=metric&exclude=hourly,minutely&appid=" . $appId;
 
-$ch = curl_init();
+// http://localhost/Gazetteer/php/getweatherForecast.php?lat=33.441792&lon=-94.037689&appid=048d2f277161c737361281a06008b561
+
 
 $ch = curl_init();
 
@@ -27,7 +28,7 @@ $ch = curl_init();
 	$output['status']['name'] = "ok";
 
 	
-    $output['data'] = $decode['daily'];
+    $output['data'] = $decode;
     
 	
 	header('Content-Type: application/json; charset=UTF-8');

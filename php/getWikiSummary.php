@@ -5,8 +5,9 @@ ini_set('display_errors', 'On');
 
 error_reporting(E_ALL);
 
+$url = 'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&explaintext&exintro=&redirects=1&exsentences=2&titles=' .$_REQUEST['titles']; 
 
-$url = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=' .$_REQUEST['title']; 
+//http://localhost/Gazetteer/php/getWikiSummary.php?&titles=glasgow
 
 $ch = curl_init();
 

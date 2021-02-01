@@ -24,7 +24,7 @@ $url ='http://api.geonames.org/countryCodeJSON?formatted=true&lat=' . $_REQUEST[
 	$output['status']['name'] = "ok";
 
 	
-    $output['data'] = $decode['countryCode'];
+    $output['data'] = $decode;
     
 	
 	header('Content-Type: application/json; charset=UTF-8');

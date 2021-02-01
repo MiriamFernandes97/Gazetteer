@@ -5,14 +5,13 @@ ini_set('display_errors', 'On');
 
 error_reporting(E_ALL);
 
-$url = "https://restcountries.eu/rest/v2/alpha/".$_REQUEST['alpha3Code'];
+$url = "https://restcountries.eu/rest/v2/alpha/".$_REQUEST['alpha2Code'];
 
 //https://restcountries.eu/rest/v2/alpha/{code}
-//https://restcountries.eu/rest/v2/alpha/col
-//http://restcountries.eu/rest/v2/alpha/COL
+//https://restcountries.eu/rest/v2/alpha/co
 
 // Below is what worked when testing it in the browser along with the url above:
-//==> http://localhost/Gazetteer/php/getCountryInfo.php?alpha3Code=COL
+//==> http://localhost/Gazetteer/php/getCountryInfo.php?alpha2Code=CO
 
 
 $ch = curl_init();

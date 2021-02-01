@@ -14,12 +14,12 @@ $countryList = array();
 
 $output = $countries['features'];
 foreach($countries['features'] as $key => $val){
-    if($val['properties']["iso_a3"] != "-99"){
+    if($val['properties']["iso_a2"] != "-99"){
     array_push($countryList, $val['properties']['name']);
 }
 }
 
 
 sort($countryList);
-	echo json_encode($countryList); 
+echo json_encode($countryList); 
 ?>
