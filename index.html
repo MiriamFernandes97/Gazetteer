@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="./libs/fontawesome/solid.min.css" type="text/css" />
     <link rel="stylesheet" href="./libs/leaflet-extra-markers/leaflet.extra-markers.min.css" type="text/css" />
     <link rel="stylesheet" href="./libs/markercluster/MarkerCluster.css" type="text/css" />
-
+    
   </head>
 
   <body class="full-height">
@@ -42,9 +42,10 @@
       >
         <span>Details </span>
       </button>
-      <img id ="logo"src="favicon.png" width="150" height="100">
+      <!-- <img id ="logo"src="favicon.png" width="150" height="100"> -->
       
-      <h1 style="color:beige; padding:20px;">Gazetteer</h1>
+      <h1 id="title">Gazetteer</h1>
+      
 
       <ul
         class="collapse navbar-collapse text-light list-unstyled"
@@ -61,7 +62,7 @@
 <div id="search">
     
   
-   <select id="countrySelect"  class="bg-dark text-light text-center border-light" name="country" required="" placeholder="Select a country..."></select>
+   <select id="countrySelect"  class="bg-dark text-light text-center border-light" name="country" required="" ></select>
      
     <div class="container-fluid fill-height bg-dark">
 
@@ -72,7 +73,7 @@
 
     </div>
 
-       
+    <footer>
       <div
         class="btn-group btn-group-toggle fixed-bottom"
         data-toggle="buttons"
@@ -91,10 +92,7 @@
       </div>
     </footer>
 
-    
-    <footer>  
-
-    <div class="modal" tabindex="-1" id="infoModal">
+    <div class="modal" tabindex="-1" id="infoModal" class="modal-scroll">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header bg-secondary">
@@ -163,15 +161,11 @@
                     <ul id="forecast6" class="forecastList"></ul>
                   </li>
                 </ul>
-                
               </div>
             </div>
           </div>
-
-       
-
+          <!-- <div class="scale-details"><div>Temperature, °C</div><div class="scale-gradient" style="width: 260px;"><div class="scale-dividers"><div>-40</div><div>-20</div><div>0</div><div>20</div><div>40</div></div><div class="horizontal-gradient-line" style="background-image: linear-gradient(to right, rgb(159, 85, 181) 0%, rgb(44, 106, 187) 8.75%, rgb(82, 139, 213) 12.5%, rgb(103, 163, 222) 18.75%, rgb(142, 202, 240) 25%, rgb(155, 213, 244) 31.25%, rgb(172, 225, 253) 37.5%, rgb(194, 234, 255) 43.75%, rgb(255, 255, 208) 50%, rgb(254, 248, 174) 56.25%, rgb(254, 232, 146) 62.5%, rgb(254, 226, 112) 68.75%, rgb(253, 212, 97) 75%, rgb(244, 168, 94) 82.5%, rgb(244, 129, 89) 87.5%, rgb(244, 104, 89) 93.75%, rgb(244, 76, 73) 100%);"></div></div></div> -->
           <div class="modal-footer bg-dark">
-            
             <button
               type="button"
               class="btn btn-secondary badge"
@@ -219,24 +213,9 @@
             >
               Close
             </button>
-
-            
           </div>
         </div>
       </div>
-
-      <!-- This is for a possible legend at the bottom right. 
-        
-        <div class="scale-details">
-        <div>Temperature, °C</div>
-        <div class="scale-gradient" style="width: 260px;"><div class="scale-dividers">
-          <div>-40</div><div>-20</div
-            ><div>0</div><div>20</div>
-            <div>40</div></div><div class="horizontal-gradient-line" style="background-image: linear-gradient(to right, rgb(159, 85, 181) 0%, rgb(44, 106, 187) 8.75%, rgb(82, 139, 213) 12.5%, rgb(103, 163, 222) 18.75%, rgb(142, 202, 240) 25%, rgb(155, 213, 244) 31.25%, rgb(172, 225, 253) 37.5%, rgb(194, 234, 255) 43.75%, rgb(255, 255, 208) 50%, rgb(254, 248, 174) 56.25%, rgb(254, 232, 146) 62.5%, rgb(254, 226, 112) 68.75%, rgb(253, 212, 97) 75%, rgb(244, 168, 94) 82.5%, rgb(244, 129, 89) 87.5%, rgb(244, 104, 89) 93.75%, rgb(244, 76, 73) 100%);">
-            </div>
-          </div>
-        </div> -->
-
     </div>
 
 <!--Scripts-->
@@ -246,12 +225,12 @@
     <script src="./libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="./libs/leaflet-extra-markers/leaflet.extra-markers.min.js"></script>
     <script src="./libs/markercluster/leaflet.markercluster.min.js"></script>
-   <!-- <script src="./scripts/country.min.js"></script>-->
-   <!-- <script src="./scripts/point-of-interest.min.js"></script>-->
-  <!--  <script src="./scripts/script.min.js"></script>-->
-  <script src="./scripts/script.js"></script>
-  <script src="./scripts/country.js"></script>
-  <script src="./scripts/point-of-interest.js"></script>
+    <!-- <script src="./scripts/country.min.js"></script>-->
+    <!-- <script src="./scripts/point-of-interest.min.js"></script>-->
+    <!--  <script src="./scripts/script.min.js"></script>-->
+    <script src="./scripts/script.js"></script>
+    <script src="./scripts/country.js"></script>
+    <script src="./scripts/point-of-interest.js"></script>
 
   </body>
 </html>
