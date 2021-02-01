@@ -10,7 +10,7 @@ $url = "http://api.geonames.org/searchJSON?country=".$_REQUEST['country']."&coun
 //used to be country= countryCode and countryBias = countryCode.
 //http://localhost/Gazetteer/php/getCityData.php?country=CA&countryBias=CA&username=miriam97
 
-$ch = curl_init();
+
 
 $ch = curl_init();
 

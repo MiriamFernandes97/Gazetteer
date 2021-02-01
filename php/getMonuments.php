@@ -11,7 +11,7 @@ $url = "http://api.geonames.org/searchJSON?formatted=true&country=".$_REQUEST['c
 
 //http://localhost/Gazetteer/php/getMonuments.php?formatted=true&country=UK&countryBias=UK&maxRows=10&featureCode=MNMT&lang=en&username=miriam97&style=full
 
-$ch = curl_init();
+
 
 $ch = curl_init();
 
