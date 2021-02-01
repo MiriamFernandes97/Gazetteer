@@ -1,9 +1,9 @@
 //Create POI class with methods for displaying information about city and monument markers
 
 class PointOfInterest {
-  constructor(latitude, longitude, geonameId, name, population, type) {
-    this.latitude = latitude;
-    this.longitude = longitude;
+  constructor(lat, lon, geonameId, name, population, type) {
+    this.latitude = lat;
+    this.longitude = lon;
     this.geonameId = geonameId;
     this.name = name;
     this.population = population;
@@ -17,22 +17,25 @@ class PointOfInterest {
 
   //Calculate distance based on coordinates
   getDistanceFromLatLonInKm(lat1, lon1) {
+    // console.log('1'); //works
     const R = 6371; // Radius of the earth in km
     const dLat = this.deg2rad(this.latitude - lat1);
     const dLon = this.deg2rad(this.longitude - lon1);
     const a = 
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(this.deg2rad(lat1)) *
-        Math.cos(this.deg2rad(this.latitude)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
+      Math.cos(this.deg2rad(this.latitude)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c; // Distance in km
     this.distance = d.toFixed();
   }
 
-  //Get wikipedia article for the POI and display a short extract
+  //Get wikipedia article url for the POI and display a short extract
   getWikiDetails() {
+    // console.log('2');
+   
     $.ajax({
       url: 'php/getWikiUrl.php',
       dataType: 'json',
@@ -42,25 +45,49 @@ class PointOfInterest {
       },
     })
       .then((result) => {
+        // console.log('10');
+
         const data = result['data']; // data is a property of the object results. The data has all the information returned from the Geonames API
+       
+        // console.log(data); // this prints out the link to whatever you have clicked on.
+      
+      //  console.log(data.timezone); 
+
         this.timeZone = data.timezone.timeZoneId;
-        this.wikiUrl = data.wikipediaURL;
-        const title = this.wikiUrl.split('/')[2]; // this is because you want the title(which is after two 2 /'s) It is this.wikiUrl.split because we are trying to get the title of the wiki article from the wiki url. The url is split with /'s and the normal format is tha the title comes after two /'s.
+      
+        this.wikiUrl = data.wikipediaURL; 
+       
+        // console.log(this.wikiUrl)
+       
+        const titles = this.wikiUrl.split('/')[2]; // this is because you want the title(which is after two 2 /'s) It is this.wikiUrl.split because we are trying to get the title of the wiki article from the wiki url. The url is split with /'s and the normal format is tha the title comes after two /'s.
+       
         this.displayInfo(); // this is to display the info from the url.
+       
         $.ajax({ // this AJAX call is to the php routine to get the wiki summary from the above Wiki url.
           url: 'php/getWikiSummary.php',
           dataType: 'json',
           type: 'POST',
           data: {
-            title: title,
+            titles: titles,
           },
         })
           .done((result) => {
+          // console.log('11');
+
             const data = Object.values(result['data'])[0]; // But why was Object used?
             const extract = data['extract']; // this is to go to the data obj and look for the extract property.
+            const cleaned = extract.replace('(listen)','') // to get rid of the other '(listen)'s which were not getting filtered out below.
+            // console.log(cleaned);
+
             //Extracts have '(listen)' where the wikipedia sound button would be, remove it
-            const regex = /\(listen\)/;
-            this.cleanExtract = extract.replace(regex, '');
+            const regex = /\((listen)\)/;
+            this.cleanExtract = cleaned.replace(regex, '');
+            const cleanerRegex =  /\(( )\)/;
+            this.cleanerExtract = this.cleanExtract.replace(cleanerRegex,'');
+
+            // console.log( this.cleanerExtract)
+            // console.log("🚀 ~ file: point-of-interest.js ~ line 83 ~ PointOfInterest ~ .done ~  this.cleanExtract",  this.cleanExtract)
+            
             this.displayWikiDetails();
           })
           .fail(() => {
@@ -72,16 +99,19 @@ class PointOfInterest {
         this.displayInfo();
         this.wikiFailure();
       });
-  }
+ }
   //Add wiki details to the modal
   displayWikiDetails() {
+    //  console.log('3');
     $('#modalBody').html(
-      `${this.cleanExtract}<br><a href=https://${this.wikiUrl} target="_blank">Full Wikipedia Article</a>` // this displays the link to the wiki article.
+      `${this.cleanerExtract}<br><a href=https://${this.wikiUrl} target="_blank">Full Wikipedia Article</a>` // this displays the link to the wiki article.
     );
   }
 
+
   //get current time at marker
   getTime() {
+    // console.log('4');
     const date = new Date();
 
     this.time = date.toLocaleString('en-GB', {
@@ -93,34 +123,50 @@ class PointOfInterest {
 
   //If no article is found
   wikiFailure() {
+    // console.log('5');
+
     $('#modalBody').html(
       `No wikipedia article could be found for this ${this.type}.`
     );
   }
 
+ 
+
   //Get current weather & forecast. Also get current time included in json
   getWeatherInfo() {
+    // console.log('6');
     $.ajax({
       url: 'php/getWeatherForecast.php',
       type: 'POST',
       dataType: 'json',
       data: {
-        latitude: this.latitude,
-        longitude: this.longitude,
+        lat: this.latitude,
+        lon: this.longitude,
       },
     }).done((result) => {
-      const data = result.data; // we just want the data from result object.
-      this.currentWeather = data.current.weather[0];
-      this.currentTemp = data.current.temp;
-      this.humidity = data.current.humidity;
-      this.pressure = data.current.pressure;
-      this.dailyWeather = data.daily;
+      // console.log('12');
+
+      this.currentWeather = result.data.current.weather[0]; 
+
+      this.currentTemp = result.data.current.temp; 
+
+      this.humidity = result.data.current.humidity; 
+     
+      this.pressure =result.data.current.pressure; 
+     
+      this.dailyWeather = result.data.daily; 
+
       this.displayWeather();
-    });
+
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      alert(`${textStatus} is the ERROR!!`);
+   });
   }
 
+ 
   //Add weather info to the modal
   displayWeather() {
+    // console.log('7');
     const forecast = [];
     //Set up a counter to be used to set up index of forecast array
     let i = 0;
@@ -132,11 +178,11 @@ class PointOfInterest {
         timeZone: this.timeZone,
         weekday: 'long', // full form of the names of the days
       });
-
       $(`#forecastImg${i}`).attr(
         'src',
         `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png` // setting the src attribute of the forecast image to the openWeather url with the first entry of the weather as the icon.
       );
+    
       $(`#forecast${i}`).html(
         `<li>${dayOfWeek}</li><li>${ 
           day.weather[0].description
@@ -168,6 +214,9 @@ class Monument extends PointOfInterest { // this is because monument has the sam
   }
   //Add general info to the modal then display it
   displayInfo() { // this is the info we want to display when you click on the monumnet icon.
+   
+    // console.log('8');
+
     this.getTime();
     $('#modalTitle').html(`${this.name}`); 
     $('#modalInfo').html(
@@ -187,6 +236,7 @@ class City extends PointOfInterest {
   }
 
   displayInfo() {
+    // console.log('9');
     this.getTime();
     $('#modalTitle').html(`${this.name}`);
     $('#modalInfo').html(

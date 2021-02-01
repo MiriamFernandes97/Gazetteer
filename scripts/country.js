@@ -23,7 +23,7 @@ class Country {
   //Fetch most populous cities for active country and add markers to the city layer group
   getCities() {
     //Clear existing city markers from the previous country
-    //check getCity again.
+ 
     cityLayer.clearLayers();
     $.ajax({
       url: 'php/getCityData.php',
@@ -145,7 +145,7 @@ class Country {
         south: south,
         east: east,
         west: west,
-      },k
+      },
     })
       .done((result) => {
         result['data'].forEach((quake) => {
@@ -181,7 +181,7 @@ class Country {
       dataType: 'json',
       type: 'POST',
       data: {
-        country:this.alpha2Code,       // country: this.alpha2Code, // 
+        country:this.alpha2Code,     
       },
     })
       .done((result) => {
