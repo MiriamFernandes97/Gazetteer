@@ -1,5 +1,5 @@
 
-//Global variables to store the users coordinates, coutries for the autoselect, and polygon of the current country
+//Global variables to store the users coordinates, countries for the autoselect, and polygon of the current country
 let userCoords = {};
 const countryList = [];
 let countryOutline;
@@ -89,6 +89,7 @@ const weatherOverlays = {
   Temperature: temp, 
   Precipitation: precipitation,
 };
+
 L.control.layers(baseMaps,weatherOverlays).addTo(map); 
 
 
@@ -376,10 +377,12 @@ const jumpToUserLocation = () => { //this works.
         alert(
           'Location request denied. Sending you to the UK by default, distances shown will be based on London.'
         );
+    
       }
     );
   } else {
     selectNewCountry('GB', 'code');
+    
      }
 };
 
@@ -482,6 +485,7 @@ $(document).ready(() => {
   loadCountrySelect();
   getCountryList();
 
+
 $('#countrySelect').on('change',function(){
   console.log(this.value);
   const code = this.value; // this gives the code of the country clicked on.
@@ -510,6 +514,7 @@ $('#countrySelect').on('change',function(){
     // map.removeLayer(earthquakeLayer);
     // map.removeLayer(cityLayer);
     map.addLayer(monumentMarkers);
+    
   });
 
 });
