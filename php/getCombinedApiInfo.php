@@ -179,9 +179,7 @@
 
         $weatherForecast = json_decode($result,true);	
         
-    
-
-        
+          
         // $output['data'] = $weatherForecast;
         
         
@@ -209,14 +207,14 @@
     
     
         
-        // $output['data'] = $wikiSummary ['query']['pages'];
+    // $output['data'] = $wikiSummary ['query']['pages'];
         
         
 
 
 
 
-    // url for getWikiUrl
+    // getWikiUrl
 
     $url = "http://api.geonames.org/getJSON?geonameId=".$_REQUEST['geonameId']."&username=miriam97";
 
@@ -245,8 +243,7 @@
         $output['status']['code'] = "200";
         $output['status']['name'] = "ok";
 
-
-        $output['data'] = $boundingBox['geonames'];
+        $output['data']['boundingBox'] = $boundingBox['geonames'];
         $output['data'] = $cityData['geonames'];
         $output['data'] = $countryFromCoords;
         $output['data'] = $countryInfo;
