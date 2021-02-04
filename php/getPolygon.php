@@ -29,7 +29,7 @@ if($_REQUEST['type'] == 'code'){  // if the type ends up being in a code format,
     if($val['properties'][$selector] == $_REQUEST['country']){ 
       echo json_encode($val); // to convert the PHP assoc array to JSON.
          break;
-    } // you should echo only once or where there is an exit (meaning that there is nothing after that.)
+    } // you should echo only once or where there is an exit (meaning that there is nothing)
     
 }
 ?>

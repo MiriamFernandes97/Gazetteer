@@ -11,8 +11,6 @@ error_reporting(E_ALL);
     $executionStartTime = microtime(true);
 
  
-    $countryCode = $_REQUEST['countryCode'];
-
     $countryData = json_decode(file_get_contents("countries_large.geo.json"), true);
 
  
