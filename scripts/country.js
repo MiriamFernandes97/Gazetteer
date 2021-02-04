@@ -1,5 +1,5 @@
 //Create  country class with methods for displaying data
-
+//these are for the three buttons at the bottom of the page.
 class Country {
   constructor(
     name,

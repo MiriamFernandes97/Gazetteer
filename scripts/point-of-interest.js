@@ -1,5 +1,6 @@
 //Create POI class with methods for displaying information about city and monument markers
 
+// this is for the modal for each monument marker, city marker.
 class PointOfInterest {
   constructor(lat, lon, geonameId, name, population, type) {
     this.latitude = lat;
@@ -17,7 +18,6 @@ class PointOfInterest {
 
   //Calculate distance based on coordinates
   getDistanceFromLatLonInKm(lat1, lon1) {
-    // console.log('1'); //works
     const R = 6371; // Radius of the earth in km
     const dLat = this.deg2rad(this.latitude - lat1);
     const dLon = this.deg2rad(this.longitude - lon1);
@@ -34,7 +34,6 @@ class PointOfInterest {
 
   //Get wikipedia article url for the POI and display a short extract
   getWikiDetails() {
-    // console.log('2');
    
     $.ajax({
       url: 'php/getWikiUrl.php',
@@ -45,20 +44,15 @@ class PointOfInterest {
       },
     })
       .then((result) => {
-        // console.log('10');
 
         const data = result['data']; // data is a property of the object results. The data has all the information returned from the Geonames API
        
         // console.log(data); // this prints out the link to whatever you have clicked on.
       
-      //  console.log(data.timezone); 
-
         this.timeZone = data.timezone.timeZoneId;
       
         this.wikiUrl = data.wikipediaURL; 
-       
-        // console.log(this.wikiUrl)
-       
+            
         const titles = this.wikiUrl.split('/')[2]; // this is because you want the title(which is after two 2 /'s) It is this.wikiUrl.split because we are trying to get the title of the wiki article from the wiki url. The url is split with /'s and the normal format is tha the title comes after two /'s.
        
         this.displayInfo(); // this is to display the info from the url.
@@ -72,7 +66,6 @@ class PointOfInterest {
           },
         })
           .done((result) => {
-          // console.log('11');
 
             const data = Object.values(result['data'])[0]; // But why was Object used?
             const extract = data['extract']; // this is to go to the data obj and look for the extract property.
@@ -102,7 +95,6 @@ class PointOfInterest {
  }
   //Add wiki details to the modal
   displayWikiDetails() {
-    //  console.log('3');
     $('#modalBody').html(
       `${this.cleanerExtract}<br><a href=https://${this.wikiUrl} target="_blank">Full Wikipedia Article</a>` // this displays the link to the wiki article.
     );
@@ -111,7 +103,6 @@ class PointOfInterest {
 
   //get current time at marker
   getTime() {
-    // console.log('4');
     const date = new Date();
 
     this.time = date.toLocaleString('en-GB', {
@@ -123,8 +114,6 @@ class PointOfInterest {
 
   //If no article is found
   wikiFailure() {
-    // console.log('5');
-
     $('#modalBody').html(
       `No wikipedia article could be found for this ${this.type}.`
     );
@@ -134,7 +123,6 @@ class PointOfInterest {
 
   //Get current weather & forecast. Also get current time included in json
   getWeatherInfo() {
-    // console.log('6');
     $.ajax({
       url: 'php/getWeatherForecast.php',
       type: 'POST',
@@ -144,7 +132,6 @@ class PointOfInterest {
         lon: this.longitude,
       },
     }).done((result) => {
-      // console.log('12');
 
       this.currentWeather = result.data.current.weather[0]; 
 
@@ -166,7 +153,6 @@ class PointOfInterest {
  
   //Add weather info to the modal
   displayWeather() {
-    // console.log('7');
     const forecast = [];
     //Set up a counter to be used to set up index of forecast array
     let i = 0;
@@ -215,8 +201,6 @@ class Monument extends PointOfInterest { // this is because monument has the sam
   //Add general info to the modal then display it
   displayInfo() { // this is the info we want to display when you click on the monumnet icon.
    
-    // console.log('8');
-
     this.getTime();
     $('#modalTitle').html(`${this.name}`); 
     $('#modalInfo').html(
@@ -236,7 +220,6 @@ class City extends PointOfInterest {
   }
 
   displayInfo() {
-    // console.log('9');
     this.getTime();
     $('#modalTitle').html(`${this.name}`);
     $('#modalInfo').html(
