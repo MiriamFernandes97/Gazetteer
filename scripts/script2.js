@@ -170,11 +170,28 @@ function displayInfo() {
   $('#population').html(` ${countryData.population}`);
 }
 
+function handleFail(){
+  $('#modalTitle').html(`Error`);
+  $('#modalBody').html('Unfortunately there was an error finding a country for these coordinates. Please try a different location');
+  $('#infoModal').modal();
+}
+
 function setCountryByCode(countryCode){
     countryData = new Country2(countryCode);
 
     countryData.getCountryInfo()
     .then(() => {
+
+      //formatting country population
+      const countryPopulation = countryData.population;
+      const formattedCountryPopulation = countryPopulation.toLocaleString();
+      countryData.population = formattedCountryPopulation;
+
+      //formatting country area
+      const countryArea = countryData.area;
+      const formattedCountryArea = countryArea.toLocaleString();
+      countryData.area = formattedCountryArea;
+
       displayInfo();
     })
 
@@ -198,6 +215,10 @@ function setCountryByCode(countryCode){
     countryData.getEarthquakes()
     .then((earthquakes) => {
         earthquakes.forEach((quake) => {
+            quake.datetime = new Date(quake.datetime); //convert to date obj. 
+            const earthquakeDate = quake.datetime.getDate();
+            const earthquakeMonth = quake.datetime.getMonth();
+            const earthquakeYear = quake.datetime.getFullYear();
             const newQuake = L.circle([quake.lat, quake.lng], {
                 color: '#dc3545',
                 fillColor: '#9C1C28',
@@ -207,7 +228,7 @@ function setCountryByCode(countryCode){
             }).addTo(earthquakeLayer);
 
             newQuake.bindPopup( // .bindPopup is a popup method from the leaflet library. It binds what happens when you click on the popup icon.
-                `Magnitude: ${quake.magnitude} <br> Date: ${quake.datetime}`  // this is what shows when you click on the earthquake icon.
+                `Magnitude: ${quake.magnitude} <br> Date: ${earthquakeDate}/${earthquakeMonth}/${earthquakeYear}`  // this is what shows when you click on the earthquake icon.
             );
         });
     })
@@ -217,11 +238,13 @@ function setCountryByCode(countryCode){
     countryData.getCities()
     .then((cities) => {
         cities.forEach((city) => {
+          const cityPopulation = city.population;
+          const formattedPopulation = cityPopulation.toLocaleString();
             const newMarker = L.marker([city.lat, city.lng], {
                 icon: (city.fcode == 'PPLC')? capitalMarker : marker,
                 type: 'city',
                 name: city.name,
-                population: city.population,
+                population: formattedPopulation,
                 latitude: city.lat,
                 longitude: city.lng,
                 capital: (city.fcode == 'PPLC'),
@@ -232,6 +255,7 @@ function setCountryByCode(countryCode){
     })
 
     monumentLayer.clearLayers();
+    monumentMarkers.clearLayers(monumentLayer);
     countryData.getMonuments()
     .then((monuments) => {
         monuments.forEach((monument) => {
@@ -245,8 +269,10 @@ function setCountryByCode(countryCode){
         }).addTo(monumentLayer);
         newMarker.on('click', infoPopup);
         });
-        monumentMarkers.addLayer(monumentLayer);
+       monumentMarkers.addLayer(monumentLayer); // adding the markers to the cluster group 
+
     })
+
 
 }
 
@@ -270,9 +296,7 @@ const getCountryCodeFromCoords = (latitude, longitude) => {
     })
     .catch(() => {
         $('#modalTitle').html(`Error`);
-        $('#modalBody').html(
-          'Unfortunately there was an error'
-        );
+        $('#modalBody').html('Unfortunately there was an error');
         $('#infoModal').modal();
     });
   
@@ -291,12 +315,10 @@ const jumpToUserLocation = () => { //this works.
                     longitude: longitude,
                     latitude: latitude,
                 };
-                // //console.log(userCoords); //this works
                 getCountryCodeFromCoords(latitude, longitude)
                 .then((countryCode) => {
                     setCountryByCode(countryCode);
                     $('#countrySelect').val(countryCode).change();
-                    adjustFontToFitSearchbar(countryCode);
                 });
             },
             (error) => {
@@ -312,7 +334,7 @@ const jumpToUserLocation = () => { //this works.
             }
         );
     } else {
-        //getPolygon('GB');     
+      getPolygon('GB');     
     }
 };
    
@@ -349,8 +371,6 @@ const loadCountrySelect =()=>{ // this works
 //This is for the select dropdown
 
 const onLocationFound=(event)=>{ // for map click as well.
-    //console.log('e'); // this is to check whether this function is getting called.
-    // e is like the event
     const latitude = event['latlng']['lat'];
     const longitude = event['latlng']['lng'];
 
@@ -362,7 +382,7 @@ const onLocationFound=(event)=>{ // for map click as well.
     
 // Error handler 
 const onLocationError=(e)=> {
-    alert(e.message);
+    console.log(e.message);
 }
 
 
@@ -401,6 +421,7 @@ $(document).ready(() => {
   
   $('#earthquakeBtn').click(() => {
     earthquakeLayer.addTo(map);
+    
   });
   
   $('#cityBtn').click(() => {
@@ -408,7 +429,7 @@ $(document).ready(() => {
   });
   
   $('#monumentBtn').click(() => {
-    map.addLayer(monumentMarkers);
+    map.addLayer(monumentMarkers); // adding the clustergroup to the map.
   });
   
 });

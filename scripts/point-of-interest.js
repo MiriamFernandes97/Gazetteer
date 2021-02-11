@@ -46,9 +46,7 @@ class PointOfInterest {
       .then((result) => {
 
         const data = result['data']; // data is a property of the object results. The data has all the information returned from the Geonames API
-       
-        // console.log(data); // this prints out the link to whatever you have clicked on.
-      
+             
         this.timeZone = data.timezone.timeZoneId;
       
         this.wikiUrl = data.wikipediaURL; 
@@ -115,7 +113,7 @@ class PointOfInterest {
   //If no article is found
   wikiFailure() {
     $('#modalBody').html(
-      `No wikipedia article could be found for this ${this.type}.`
+      `No wikipedia articleq could be found for this ${this.type}.`
     );
   }
 
@@ -146,7 +144,7 @@ class PointOfInterest {
       this.displayWeather();
 
     }).fail((jqXHR, textStatus, errorThrown) => {
-      alert(`${textStatus} is the ERROR!!`);
+      console.log(`${textStatus} is the ERROR!!`);
    });
   }
 

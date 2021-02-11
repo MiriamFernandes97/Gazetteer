@@ -41,15 +41,13 @@ class Country2 {
             return this; // 'this' is the instance of country2.
         }) 
         .catch((jqXHR, textStatus, errorThrown) => {
-            alert(`${textStatus} is the ERROR!!`);
+            console.log(`${textStatus} is the ERROR!!`);
         });
      };
 
     handleFail(){
         $('#modalTitle').html(`Error`);
-        $('#modalBody').html(
-          'Unfortunately there was an error finding a country for these coordinates. Please try a different location'
-        );
+        $('#modalBody').html('Unfortunately there was an error finding a country for these coordinates. Please try a different location');
         $('#infoModal').modal();
     }
 
@@ -71,7 +69,7 @@ class Country2 {
             return this.polygon;
         }) 
         .fail((jqXHR, textStatus, errorThrown) => {
-            alert(`${textStatus} is the ERROR!!`);
+            console.log(`${textStatus} is the ERROR!!`);
         });
      };
 
@@ -93,9 +91,7 @@ class Country2 {
             })
             .catch(() => {
                 $('#modalTitle').html(`Error`);
-                $('#modalBody').html(
-                'Unfortunately there was an error fetching the earthquake data. Please try selecting a different country'
-                );
+                $('#modalBody').html('Unfortunately there was an error fetching the earthquake data. Please try selecting a different country');
                 $('#infoModal').modal();
             });
         }else{
@@ -107,7 +103,6 @@ class Country2 {
       }
     
     getMonuments() {
-        //Clear any existing markers from previous country
         if(this.monuments){
             return Promise.resolve(this.monuments);
         }
@@ -120,16 +115,14 @@ class Country2 {
                     country: this.countryCode,
                     countryBias:this.countryCode,
                 },
-            })
+        })
         .then((result) => {
             this.monuments = result.data;
             return this.monuments;
         })
           .catch(() => {
             $('#modalTitle').html(`Error`);
-            $('#modalBody').html(
-              'Unfortunately there was an error fetching the monument data. Please try selecting a different country'
-            );
+            $('#modalBody').html('Unfortunately there was an error fetching the monument data. Please try selecting a different country');
             $('#infoModal').modal();
         });
       }
@@ -155,9 +148,7 @@ class Country2 {
         })
         .catch(() => {
             $('#modalTitle').html(`Error`);
-            $('#modalBody').html(
-            'Unfortunately there was an error fetching city information. Please try again or select a different country.'
-            );
+            $('#modalBody').html('Unfortunately there was an error fetching city information. Please try again or select a different country.');
             $('#infoModal').modal(); // This creates a modal in jQuery. A modal is a popup window.
         });
     
@@ -196,9 +187,7 @@ class Country2 {
         })
         .catch(() => {
             $('#modalTitle').html(`Error`);
-            $('#modalBody').html(
-            'Unfortunately there was an error fetching the earthquake data. Please try selecting a different country'
-            );
+            $('#modalBody').html('Unfortunately there was an error fetching the earthquake data. Please try selecting a different country');
             $('#infoModal').modal();
         });
 
