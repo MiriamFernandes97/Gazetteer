@@ -1,12 +1,10 @@
 <?php
-
 //this is for checking errors
 ini_set('display_errors', 'On');
 
 error_reporting(E_ALL);
 
 $url ='countries_large.geo.json';
-
 
 $countries = json_decode(file_get_contents($url), true);
 
@@ -19,7 +17,7 @@ foreach($countries['features'] as $key => $val){
 }
 }
 
-
 sort($countryList);
+
 echo json_encode($countryList); 
 ?>

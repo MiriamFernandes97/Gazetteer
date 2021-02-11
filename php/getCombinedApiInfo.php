@@ -1,10 +1,8 @@
 <?php
-
 //this is for checking errors
 ini_set('display_errors', 'On');
 
 error_reporting(E_ALL);
-
 
 function getCountryFromCoords($lat,$lng){
     $url ='http://api.geonames.org/countryCodeJSON?formatted=true&lat=' . $lat . '&lng=' . $lng . '&username=miriam97&style=full';
@@ -49,8 +47,6 @@ function getCityData($countryCode, $countryBias){
     $url = "http://api.geonames.org/searchJSON?country=".$countryCode."&countryBias=".$countryBias."&featureClass=P&maxRows=10&orderby=population&username=miriam97";
     //used to be country= countryCode and countryBias = countryCode.
     //http://localhost/Gazetteer/php/getCityData.php?country=CA&countryBias=CA&username=miriam97
-
-
 
     $ch = curl_init();
 
@@ -109,9 +105,6 @@ function getCountry(){
 
 function getCountryInfo($alpha2Code){
     $url = "https://restcountries.eu/rest/v2/alpha/".$alpha2Code;
-
-    //https://restcountries.eu/rest/v2/alpha/{code}
-    //https://restcountries.eu/rest/v2/alpha/co
 
     // Below is what worked when testing it in the browser along with the url above:
     //==> http://localhost/Gazetteer/php/getCountryInfo.php?alpha2Code=CO

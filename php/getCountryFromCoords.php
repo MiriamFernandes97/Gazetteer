@@ -1,5 +1,4 @@
 <?php
-
 //this is for checking errors
 ini_set('display_errors', 'On');
 
@@ -9,27 +8,25 @@ $url ='http://api.geonames.org/countryCodeJSON?formatted=true&lat=' . $_REQUEST[
 
 // http://localhost/Gazetteer/php/getCountryFromCoords.php?lat=55&lng=-4
 
-	$ch = curl_init();
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_URL,$url);
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_URL,$url);
 
-	$result=curl_exec($ch);
+$result=curl_exec($ch);
 
-	curl_close($ch);
+curl_close($ch);
 
-	$decode = json_decode($result,true);	
+$decode = json_decode($result,true);	
 
-	$output['status']['code'] = "200";
-	$output['status']['name'] = "ok";
+$output['status']['code'] = "200";
+$output['status']['name'] = "ok";
 
-	
-    $output['data'] = $decode;
-    
-	
-	header('Content-Type: application/json; charset=UTF-8');
+$output['data'] = $decode;
 
-	echo json_encode($output); 
+header('Content-Type: application/json; charset=UTF-8');
+
+echo json_encode($output); 
 
 
 ?>

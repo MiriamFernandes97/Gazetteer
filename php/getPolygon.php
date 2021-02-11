@@ -6,13 +6,11 @@ ini_set('display_errors', 'On');
 
 error_reporting(E_ALL);
 
-
 $url = 'countries_large.geo.json';
 
 $countries = json_decode(file_get_contents($url), true); // to convert JSON to PHP assoc array.
 
 $features = $countries['features'];
-
 
 // print_r($features); // to check what $features shows. 
 
@@ -22,13 +20,12 @@ if($_REQUEST['type'] == 'code'){  // if the type ends up being in a code format,
     $selector = 'iso_a2'; 
 }else{
     $selector = 'name';
-
 }
 
- foreach($features as  $key=>$val ){ //this means that features will be stored as values. [it was as key value pairs before.]
+foreach($features as  $key=>$val ){ //this means that features will be stored as values. [it was as key value pairs before.]
     if($val['properties'][$selector] == $_REQUEST['country']){ 
       echo json_encode($val); // to convert the PHP assoc array to JSON.
-         break;
+        break;
     } // you should echo only once or where there is an exit (meaning that there is nothing)
     
 }
