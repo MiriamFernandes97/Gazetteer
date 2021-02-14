@@ -290,7 +290,7 @@ const getCountryCodeFromCoords = (latitude, longitude) => {
     .then((result) => {  
         //Only change value if a country was found for the location otherwise search empties when ocean is clicked
         if (result.data.countryCode) { 
-            let countryCode= result.data.countryCode;        
+            let countryCode= result.data.countryCode;    
             return countryCode; 
         }
     })
@@ -431,6 +431,43 @@ $(document).ready(() => {
   $('#monumentBtn').click(() => {
     map.addLayer(monumentMarkers); // adding the clustergroup to the map.
   });
+
+
+  
+
+  $(function(){
+    // #slideSubMenu is for the x
+    // .countryInfo is for the whole part for the info + buttons
+    // .slideMenu is for the div for the 3 bars icon
+    $('#slideSubMenu').on('click',function() {			        
+          $(this).closest('.countryInfo').fadeOut('slide',function(){ // for each element, get the first element that matches the selector.
+            $('.slideMenu').fadeIn();	
+          });
+
+    });
+  
+    $('.slideMenu').on('click',function(){		
+          $(this).next('.countryInfo').toggle('slide');
+          $('.slideMenu').hide();
+    })
+  })
+  
+
+  
+  // $(function(){
+
+  //   $('#cityBtn').on('click',function() {			        
+  //     map.addLayer(cityLayer);
+  //   });
+
+  //   $('#cityBtn').on('click',function() {			        
+  //     map.removeLayers(cityLayer);
+  //   });
+
+    
+  
+  // })
+   
   
 });
    
