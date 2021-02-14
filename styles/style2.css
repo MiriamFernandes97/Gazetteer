@@ -1,0 +1,126 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+html, body, #map {
+  height: 100%;
+  width: 100vw;
+}
+.bg-dark{
+  padding-left:2px;
+  padding-bottom:11px;
+}
+
+#map{
+  z-index: 20;
+}
+
+#search{
+  padding-bottom: 10px;
+  border-bottom: 1px solid #6c757d; 
+  
+}
+
+#title{
+  font-family: 'Lato', sans-serif;
+  font-size: 30px;
+  padding-bottom:10px;
+  margin-left:10px;
+}
+
+#countrySelect{
+  font-family: 'Lato', sans-serif;
+  font-size:20px;
+  display:block;
+}
+
+#mapContainer{
+  height:100vh;
+}
+
+.countryInfo{
+  position:absolute;
+  left:0;
+  z-index: 1060;
+}
+
+#flag {
+  height: 2em;
+  padding-top:10px;
+}
+
+.info {
+  margin-right: 1.2em;
+  margin-left:1.2em;
+}
+
+.forecastImg {
+  float: left;
+  height: 80px;
+}
+
+.monument-marker-cluster {
+  background-color: rgba(153, 200, 146, 0.8);
+}
+
+.monument-marker-cluster div {
+  background-color: rgba(175, 213, 170, 0.6);
+}
+
+.marker-cluster span {
+  line-height: 30px;
+}
+
+.marker-cluster {
+  background-clip: padding-box;
+  border-radius: 20px;
+}
+
+.marker-cluster div {
+  width: 30px;
+  height: 30px;
+  margin-left: 5px;
+  margin-top: 5px;
+  text-align: center;
+  border-radius: 15px;
+  font: 12px 'Lato', sans-serif, Helvetica, sans-serif;
+  color: #f8f9fa;
+}
+
+.fa-bars:before {
+  padding:10px;
+}
+
+.btn-group{
+  display: inline-flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  padding:0;
+  padding-bottom:10px;
+  padding-left:8px;
+  margin-left:-3px;
+}
+
+#cityBtn{
+  margin-bottom:12px;
+}
+
+#monumentBtn{
+  margin-bottom:12px;
+}
+
+.slideMenu{
+  position: absolute;
+  z-index: 100;
+}
+
+#sliderContainer{
+  padding:0;
+  margin-top:6px;
+  display:hidden;
+}
+@media (min-width: 576px) {
+  #search {
+    margin-right:30px;
+  }
+}
