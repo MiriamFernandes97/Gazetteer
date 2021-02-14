@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="author" content="Miriam Fernandes">
+        <meta name="description" content="Gazeetteer Application using cURL,PHP,AJAX,and JSON,jQuery">
+
+        <title>Gazetteer</title>
+
+        <!-- Link to Favicon -->
+        <link rel="icon" type="image/png" href="./favicon.png"/>
+
+        <!--Fonts-->
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
+
+        <!-- CSS files -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+        <link rel="stylesheet" href="./styles/style2.css"  type="text/css" />
+        <link rel="stylesheet" href="./libs/jqueryui/jquery-ui.min.css"  type="text/css"/>
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" href="./libs/leaflet-extra-markers/leaflet.extra-markers.min.css" type="text/css" />
+        <link rel="stylesheet" href="./libs/markercluster/MarkerCluster.css" type="text/css" />
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-secondary d-flex flex-row flex-wrap">  
+            <h1 id="title" class="navbar-brand">Gazetteer</h1>
+           
+            <div id="search" class="flex-grow-1"> 
+                <select id="countrySelect" class="border border-white rounded-pill bg-secondary text-white text-center dropdown-md-center p-1 w-100 float-sm-end m-s-sm-1" style="max-width: 375px;float:right;" name="country" required="" ></select>
+            </div>             
+        </nav>
+
+        <div>
+            <div class="row w-100" >
+                <div class="col-sm-6 sidebar"> 
+            <div id="sliderContainer" class=" container slideMenu bg-white w-auto m-top-xxl-2" > <!--margin-top:6px-->
+               <i id="sliderToggle" class="fa fa-bars fa-2x" aria-hidden="true" ></i>
+            </div>
+
+            <div class="countryInfo" style="display:none">  
+                <span class="list-group-item bg-dark text-white fs-5"> Country Information:
+                    <span class="pull-right" id="slideSubMenu">
+                        <i class="fa fa-times"></i>
+                    </span>
+                </span>
+
+                <div class="container bg-dark text-white" id="countryDetails">
+                        <p><img id="flag" class="info" /></p>
+                        <p class="info">Capital:&nbsp;<span id="capital"></span></p>
+                        <p class="info">Area(km<sup>2</sup>):&nbsp;<span id="area"></span></p>
+                        <p class="info">Population:&nbsp;<span id="population"></span></p>
+                        <p class="info">Currency:&nbsp; <span id="currency"></span></p>
+                                      
+                    <div class="container">
+                        <!-- <div class="btn btn-group " role="button" >
+                            <button type="button" id="cityBtn" class="btn btn-outline-primary text-white">Cities Button</button>  
+                            <button type="button" id="monumentBtn" class="btn btn-outline-primary">Monuments Button</button>
+                            <button type="button" id="earthquakeBtn" class="btn btn-outline-primary">Earthquake Button</button>
+                        </div> -->
+                        <div class="form-check form-switch"> 
+                            <input type="checkbox" id="cityBtn" class="form-check-input text-white">
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Cities Button</label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input type="checkbox" id="monumentBtn" class="form-check-input text-white">
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Monument Button</label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input type="checkbox" id="earthquakeBtn" class="form-check-input text-white">
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Earthquake Button</label>
+                        </div>
+
+                    </div>    
+                </div>
+            </div>  
+
+            <div id="mapContainer">
+              <div id="map"></div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="card">
+                
+            </div>
+        </div>
+    
+        <!--Scripts-->
+        <script src="./libs/jquery/jquery.min.js"></script>
+        <script src="./libs/jqueryui/jquery-ui.min.js"></script>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+        <script src="./libs/leaflet-extra-markers/leaflet.extra-markers.min.js"></script>
+        <script src="./libs/markercluster/leaflet.markercluster.min.js"></script>
+        <script src="./scripts/point-of-interest.js"></script>
+        <script src="./scripts/script2.js"></script>
+        <script src="./scripts/country2.js"></script>
+
+
+    </body>
+</html>
