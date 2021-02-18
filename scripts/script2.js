@@ -312,7 +312,7 @@ const jumpToUserLocation = () => { //this works.
       },
       (error) => {
         //If user denies location access, default to UK
-        //setCountryByCode('GB');
+        setCountryByCode('GB');
         userCoords = {
           longitude: -0.118092,
           latitude: 51.509865,
