@@ -3,8 +3,8 @@ let userCoords = {};
 const countryList = [];
 let countryOutline;
 let countryData = null;
-//Setting the details for the different map displays
 
+//Setting the details for the different map displays
 const light = L.tileLayer(
   'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
   {
@@ -14,7 +14,6 @@ const light = L.tileLayer(
     maxZoom: 19,
   }
 );
-
 
 const dark = L.tileLayer(
   'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
@@ -48,7 +47,6 @@ const earthAtNight = L.tileLayer(
     tilematrixset: 'GoogleMapsCompatible_Level',
   }
 );
-
 
 const precipitation = L.tileLayer('https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid={appId}', { 
   tileSize: 512,
@@ -85,16 +83,14 @@ const capitalMarker = L.ExtraMarkers.icon({ // the capital has a different color
 });
 
 const monumentMarker = L.ExtraMarkers.icon({
-    icon: 'fa-binoculars',
-    markerColor: '#AFD5AA',
-    shape: 'penta',
-    svg: true,
-    prefix: 'fa',
+  icon: 'fa-binoculars',
+  markerColor: '#AFD5AA',
+  shape: 'penta',
+  svg: true,
+  prefix: 'fa',
   });
 
-
 //Initializing the map and setting its default layer to the light theme which was defined above.
-
 const map = L.map('map', {center: [39.73, -104.99],zoom:10,zoomControl: false, layers: [light]});
 
 //zoom control buttons
@@ -106,7 +102,6 @@ const baseMaps = {
   Dark: dark,
   Satellite: satellite, 
   'Earth At Night': earthAtNight,
-  
 };
 
 const weatherOverlays = { 
@@ -133,31 +128,31 @@ const monumentMarkers = L.markerClusterGroup({
 
 //Creating a pop up when a monument marker is clicked
 const infoPopup = (event) => {
-    let marker;
-    const markerDetails = event.target.options;
-    //creating either new city or monument object
-    if (markerDetails.type == 'city') {
-      marker = new City(
-        markerDetails.latitude,
-        markerDetails.longitude,
-        markerDetails.geonameId,
-        markerDetails.name,
-        markerDetails.population,
-        markerDetails.type
-      );
-    } else if (markerDetails.type == 'monument') {
-      marker = new Monument(
-        markerDetails.latitude,
-        markerDetails.longitude,
-        markerDetails.geonameId,
-        markerDetails.name,
-        markerDetails.type
-      );
-    }
-    //Getting distance between marker and user
-    marker.getDistanceFromLatLonInKm(userCoords.latitude, userCoords.longitude);
-    marker.getWikiDetails();
-    marker.getWeatherInfo();
+  let marker;
+  const markerDetails = event.target.options;
+  //creating either new city or monument object
+  if (markerDetails.type == 'city') {
+    marker = new City(
+      markerDetails.latitude,
+      markerDetails.longitude,
+      markerDetails.geonameId,
+      markerDetails.name,
+      markerDetails.population,
+      markerDetails.type
+    );
+  } else if (markerDetails.type == 'monument') {
+    marker = new Monument(
+      markerDetails.latitude,
+      markerDetails.longitude,
+      markerDetails.geonameId,
+      markerDetails.name,
+      markerDetails.type
+    );
+  }
+  //Getting distance between marker and user
+  marker.getDistanceFromLatLonInKm(userCoords.latitude, userCoords.longitude);
+  marker.getWikiDetails();
+  marker.getWeatherInfo();
 };
   
 //Display info for selected country
@@ -165,7 +160,6 @@ function displayInfo() {
   $('#flag').attr('src', countryData.flag);
   $('#area').html(` ${countryData.area}`);
   $('#capital').html(` ${countryData.capital}`);
-
   $('#currency').html(` ${countryData.currency.name} (${countryData.currency.symbol})`);
   $('#population').html(` ${countryData.population}`);
 }
@@ -177,165 +171,160 @@ function handleFail(){
 }
 
 function setCountryByCode(countryCode){
-    countryData = new Country2(countryCode);
+  countryData = new Country2(countryCode);
 
-    countryData.getCountryInfo()
-    .then(() => {
+  countryData.getCountryInfo()
+  .then(() => {
 
-      //formatting country population
-      const countryPopulation = countryData.population;
-      const formattedCountryPopulation = countryPopulation.toLocaleString();
-      countryData.population = formattedCountryPopulation;
+    //formatting country population
+    const countryPopulation = countryData.population;
+    const formattedCountryPopulation = countryPopulation.toLocaleString();
+    countryData.population = formattedCountryPopulation;
 
-      //formatting country area
-      const countryArea = countryData.area;
-      const formattedCountryArea = countryArea.toLocaleString();
-      countryData.area = formattedCountryArea;
+    //formatting country area
+    const countryArea = countryData.area;
+    const formattedCountryArea = countryArea.toLocaleString();
+    countryData.area = formattedCountryArea;
 
-      displayInfo();
-    })
+    displayInfo();
+  })
 
-    // If a polygon is already drawn, clear it
-    if (countryOutline && countryOutline.clearLayers) {
-        countryOutline.clearLayers();
-    }
-    countryData.getPolygon()
-    .then(() => {
-        countryOutline = L.geoJSON(countryData.polygon, { 
-            style: {
-                color: '#fd7e14',
-            },
-        }).addTo(map);
-        
-        map.fitBounds(countryOutline.getBounds());
-    })
+  // If a polygon is already drawn, clear it
+  if (countryOutline && countryOutline.clearLayers) {
+    countryOutline.clearLayers();
+  }
+  countryData.getPolygon()
+  .then(() => {
+    countryOutline = L.geoJSON(countryData.polygon, { 
+      style: {
+        color: 'red',
+      },
+    }).addTo(map);
+    map.fitBounds(countryOutline.getBounds());
+  })
 
-    //set up earthquake data
-    earthquakeLayer.clearLayers();
-    countryData.getEarthquakes()
-    .then((earthquakes) => {
-        earthquakes.forEach((quake) => {
-            quake.datetime = new Date(quake.datetime); //convert to date obj. 
-            const earthquakeDate = quake.datetime.getDate();
-            const earthquakeMonth = quake.datetime.getMonth();
-            const earthquakeYear = quake.datetime.getFullYear();
-            const newQuake = L.circle([quake.lat, quake.lng], {
-                color: '#dc3545',
-                fillColor: '#9C1C28',
-                fillOpacity: 0.5,
-                //Cube the magnitude to emphasise difference, otherwise all circles will appear more or less the same size
-                radius: Math.pow(quake.magnitude, 3) * 500,
-            }).addTo(earthquakeLayer);
+  //set up earthquake data
+  earthquakeLayer.clearLayers();
+  countryData.getEarthquakes()
+  .then((earthquakes) => {
+    earthquakes.forEach((quake) => {
+      quake.datetime = new Date(quake.datetime); //convert to date obj. 
+      const earthquakeDate = quake.datetime.getDate();
+      const earthquakeMonth = quake.datetime.getMonth();
+      const earthquakeYear = quake.datetime.getFullYear();
+      const newQuake = L.circle([quake.lat, quake.lng], {
+        color: '#dc3545',
+        fillColor: '#9C1C28',
+        fillOpacity: 0.5,
+        //Cube the magnitude to emphasise difference, otherwise all circles will appear more or less the same size
+        radius: Math.pow(quake.magnitude, 3) * 500,
+      }).addTo(earthquakeLayer);
+      newQuake.bindPopup( // .bindPopup is a popup method from the leaflet library. It binds what happens when you click on the popup icon.
+        `Magnitude: ${quake.magnitude} <br> Date: ${earthquakeDate}/${earthquakeMonth}/${earthquakeYear}`  // this is what shows when you click on the earthquake icon.
+      );
+    });
+  })
 
-            newQuake.bindPopup( // .bindPopup is a popup method from the leaflet library. It binds what happens when you click on the popup icon.
-                `Magnitude: ${quake.magnitude} <br> Date: ${earthquakeDate}/${earthquakeMonth}/${earthquakeYear}`  // this is what shows when you click on the earthquake icon.
-            );
-        });
-    })
+  //set up city data
+  cityLayer.clearLayers();
+  countryData.getCities()
+  .then((cities) => {
+    cities.forEach((city) => {
+      const cityPopulation = city.population;
+      const formattedPopulation = cityPopulation.toLocaleString();
+        const newMarker = L.marker([city.lat, city.lng], {
+          icon: (city.fcode == 'PPLC')? capitalMarker : marker,
+          type: 'city',
+          name: city.name,
+          population: formattedPopulation,
+          latitude: city.lat,
+          longitude: city.lng,
+          capital: (city.fcode == 'PPLC'),
+          geonameId: city.geonameId,
+      }).addTo(cityLayer);
+      newMarker.on('click', infoPopup); // there is a different icon for city which is the capital.
+    });
+  })
 
-    //set up city data
-    cityLayer.clearLayers();
-    countryData.getCities()
-    .then((cities) => {
-        cities.forEach((city) => {
-          const cityPopulation = city.population;
-          const formattedPopulation = cityPopulation.toLocaleString();
-            const newMarker = L.marker([city.lat, city.lng], {
-                icon: (city.fcode == 'PPLC')? capitalMarker : marker,
-                type: 'city',
-                name: city.name,
-                population: formattedPopulation,
-                latitude: city.lat,
-                longitude: city.lng,
-                capital: (city.fcode == 'PPLC'),
-                geonameId: city.geonameId,
-            }).addTo(cityLayer);
-            newMarker.on('click', infoPopup); // there is a different icon for city which is the capital.
-        });
-    })
+  monumentLayer.clearLayers();
+  monumentMarkers.clearLayers(monumentLayer);
+  countryData.getMonuments()
+  .then((monuments) => {
+    monuments.forEach((monument) => {
+    const newMarker = new L.marker([monument.lat, monument.lng], {
+      icon: monumentMarker,
+      name: monument.name,
+      latitude: monument.lat,
+      longitude: monument.lng,
+      type: 'monument',
+      geonameId: monument.geonameId,
+    }).addTo(monumentLayer);
+    newMarker.on('click', infoPopup);
+    });
+    monumentMarkers.addLayer(monumentLayer); // adding the markers to the cluster group 
 
-    monumentLayer.clearLayers();
-    monumentMarkers.clearLayers(monumentLayer);
-    countryData.getMonuments()
-    .then((monuments) => {
-        monuments.forEach((monument) => {
-        const newMarker = L.marker([monument.lat, monument.lng], {
-            icon: monumentMarker,
-            name: monument.name,
-            latitude: monument.lat,
-            longitude: monument.lng,
-            type: 'monument',
-            geonameId: monument.geonameId,
-        }).addTo(monumentLayer);
-        newMarker.on('click', infoPopup);
-        });
-       monumentMarkers.addLayer(monumentLayer); // adding the markers to the cluster group 
-
-    })
-
-
+  })
 }
 
 //Use the users coordinates to get the name of their country
 const getCountryCodeFromCoords = (latitude, longitude) => { 
-    return $.ajax({
-      url: 'php/getCountryFromCoords.php',
-      type: 'POST',
-      dataType: 'json',
-      data: {
-        lat: latitude, 
-        lng: longitude,
-      },
-    })
-    .then((result) => {  
-        //Only change value if a country was found for the location otherwise search empties when ocean is clicked
-        if (result.data.countryCode) { 
-            let countryCode= result.data.countryCode;    
-            return countryCode; 
-        }
-    })
-    .catch(() => {
-        $('#modalTitle').html(`Error`);
-        $('#modalBody').html('Unfortunately there was an error');
-        $('#infoModal').modal();
-    });
+  return $.ajax({
+    url: 'php/getCountryFromCoords.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      lat: latitude, 
+      lng: longitude,
+    },
+  })
+  .then((result) => {  
+    //Only change value if a country was found for the location otherwise search empties when ocean is clicked
+    if (result.data.countryCode) { 
+      let countryCode= result.data.countryCode;    
+      return countryCode; 
+    }
+  })
+  .catch(() => {
+    $('#modalTitle').html(`Error`);
+    $('#modalBody').html('Unfortunately there was an error');
+    $('#infoModal').modal();
+  });
   
 };
 
 //Find the user location and uses it to locate country on the map
 const jumpToUserLocation = () => { //this works.
-    //Check to see if user's browser supports navigator
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                //Save the lat & long and pass it to the function to get the country
-                const { longitude, latitude } = position.coords; 
-                //Store the coords in a global to be used later to calculate distances
-                userCoords = {
-                    longitude: longitude,
-                    latitude: latitude,
-                };
-                getCountryCodeFromCoords(latitude, longitude)
-                .then((countryCode) => {
-                    setCountryByCode(countryCode);
-                    $('#countrySelect').val(countryCode).change();
-                });
-            },
-            (error) => {
-                //If user denies location access, default to UK
-                //getPolygon('GB');
-                userCoords = {
-                    longitude: -0.118092,
-                    latitude: 51.509865,
-                };
-                alert(
-                    'Location request denied. Sending you to the UK by default, distances shown will be based on London.'
-                );
-            }
+  //Check to see if user's browser supports navigator
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        //Save the lat & long and pass it to the function to get the country
+        const { longitude, latitude } = position.coords; 
+        //Store the coords in a global to be used later to calculate distances
+        userCoords = {
+          longitude: longitude,
+          latitude: latitude,
+        };
+        getCountryCodeFromCoords(latitude, longitude)
+        .then((countryCode) => {
+          $('#countrySelect').val(countryCode).change();
+        });
+      },
+      (error) => {
+        //If user denies location access, default to UK
+        //setCountryByCode('GB');
+        userCoords = {
+          longitude: -0.118092,
+          latitude: 51.509865,
+        };
+        alert(
+          'Location request denied. Sending you to the UK by default, distances shown will be based on London.'
         );
-    } else {
-      getPolygon('GB');     
-    }
+        }
+    );
+  } else {
+    setCountryByCode('GB');     
+  }
 };
    
 // Populate Select
@@ -345,7 +334,7 @@ const loadCountrySelect =()=>{ // this works
         url: 'php/getCountry.php',
         dataType: 'json',
         data: {
-            countryCode: 'country' 
+          countryCode: 'country' 
   
         }, 
     })   
@@ -363,7 +352,6 @@ const loadCountrySelect =()=>{ // this works
         });
     })
     .fail((err)=>{
-        //console.log('something',err.responseText);
         handleFail();
     });
 };
@@ -376,7 +364,7 @@ const onLocationFound=(event)=>{ // for map click as well.
 
     getCountryCodeFromCoords(latitude,longitude)
     .then((countryCode) => {
-        $('#countrySelect').val(countryCode).change(); // it was countryCode before // this is to change the countryCode to the one of the country that the user selects
+      $('#countrySelect').val(countryCode).change(); // this is to change the countryCode to the one of the country that the user selects
     })
 }
     
@@ -391,7 +379,7 @@ const getCountryList = () => {
     const url = 'php/getCountryList.php';
     $.getJSON(url, (data) => {
         $(data).each((key, value) => {
-            countryList.push(value);
+          countryList.push(value);
         });
     });
 };
@@ -406,68 +394,64 @@ $(document).ready(() => {
   loadCountrySelect();
 
   getCountryList();
-
-  map.on('locationfound',onLocationFound);
-
-  map.on('locationerror',onLocationError);
-
-  //Change country based on map click
+  
+//Change country based on map click
   map.on('click', onLocationFound);  
 
   $('#countrySelect').on('change',function(){
     const countryCode = this.value;
     setCountryByCode(countryCode);
   });
-  
-  $('#earthquakeBtn').click(() => {
-    earthquakeLayer.addTo(map);
-    
-  });
-  
-  $('#cityBtn').click(() => {
-    map.addLayer(cityLayer);
-  });
-  
-  $('#monumentBtn').click(() => {
-    map.addLayer(monumentMarkers); // adding the clustergroup to the map.
-  });
-
-
-  
 
   $(function(){
     // #slideSubMenu is for the x
     // .countryInfo is for the whole part for the info + buttons
     // .slideMenu is for the div for the 3 bars icon
     $('#slideSubMenu').on('click',function() {			        
-          $(this).closest('.countryInfo').fadeOut('slide',function(){ // for each element, get the first element that matches the selector.
-            $('.slideMenu').fadeIn();	
-          });
-
+        $(this).closest('.countryInfo').fadeOut('slide',function(){ // for each element, get the first element that matches the selector.
+          $('.slideMenu').fadeIn();	
+        });
     });
   
     $('.slideMenu').on('click',function(){		
-          $(this).next('.countryInfo').toggle('slide');
-          $('.slideMenu').hide();
+        $(this).next('.countryInfo').toggle('slide');
+        $('.slideMenu').hide();
     })
-  })
-  
-
-  
-  // $(function(){
-
-  //   $('#cityBtn').on('click',function() {			        
-  //     map.addLayer(cityLayer);
-  //   });
-
-  //   $('#cityBtn').on('click',function() {			        
-  //     map.removeLayers(cityLayer);
-  //   });
-
+  });
     
-  
-  // })
-   
-  
+  $("#cityBtn").click(function() { // when the switch control is clicked on
+    if (this.checked) { // if the checkbox switch has been checked, add the cityLayer to the map.
+    cityLayer.addTo(map); // this also works: map.addLayer(cityLayer)
+    } else {
+    map.removeLayer(cityLayer);
+    }; 
+  });
+
+  $("#monumentBtn").click(function() {
+    if (this.checked) {
+    monumentMarkers.addTo(map); //adding the clustergroup to the map.
+    } else {
+    map.removeLayer(monumentMarkers); 
+    };
+  });
+
+  $("#earthquakeBtn").click(function() {
+    if (this.checked) {
+    earthquakeLayer.addTo(map);
+    } else {
+    map.removeLayer(earthquakeLayer);
+    };
+  });
+
+
 });
+
+
+  
+
+ 
+  
+
+  
+
    
