@@ -1,24 +1,70 @@
-body {
-  padding: 0;
-  margin: 0;
+
+@media screen and (max-width: 576px) { 
+  #countryDetailsTitle{
+    font-size:1.4em;
+  }
+  #countryDetails{
+    padding-left: 0px;
+    font-size: 1.2em;
+    padding-bottom: 13px;
+  }  
+
+  #countrySelect{
+    margin-right:1px;
+  }
+
+  .modal-footer{
+    justify-content: center;
+  }
+
+ #lists{
+    padding: -0.5rem 1rem;
+  }
+
 }
-html, body, #map {
-  height: 100%;
-  width: 100vw;
+
+@media screen and (min-width: 1400px) { 
+
+  #search {
+    margin-right:25px;
+  }
+
+  #countrySelect{
+    font-size:26px;
+  }
+
+  #countryDetails{
+    font-size:1.3em;
+    padding-bottom: 1.3em;
+  }
+
+  #countryDetailsTitle{
+    font-size:1.4em;
+  }
+
+  #title{
+    font-size:2em;
+  }
 }
-.bg-dark{
-  padding-left:2px;
-  padding-bottom:11px;
-}
+
+html,body{
+  overflow:hidden;
+  min-height:100%;
+} 
 
 #map{
   z-index: 20;
+  height: 100vh;
+  width:100vw;
+  overflow:hidden;
 }
 
+/* The select bar container. */
 #search{
   padding-bottom: 10px;
   border-bottom: 1px solid #6c757d; 
-  
+  padding-right:10px;
+  padding-left:10px;
 }
 
 #title{
@@ -32,26 +78,94 @@ html, body, #map {
   font-family: 'Lato', sans-serif;
   font-size:20px;
   display:block;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  appearance:none; 
 }
 
 #mapContainer{
   height:100vh;
+  width:100vw;
 }
 
 .countryInfo{
   position:absolute;
   left:0;
   z-index: 1060;
+  font-family: 'Lato', sans-serif;
+  font-size:0.9em;
 }
 
 #flag {
-  height: 2em;
+  height: 4em;
   padding-top:10px;
 }
 
 .info {
   margin-right: 1.2em;
   margin-left:1.2em;
+}
+
+.forecastImg {
+  float: left;
+  height: 80px;
+}
+
+.btn-secondary,.btn-danger{
+  font-size:20px;
+}
+
+::placeholder {
+  color: #a3a8ac;
+}
+
+.ui-menu-item {
+  border: 1px solid #6c757d;
+  font-family: 'Lato', sans-serif;
+
+}
+#closeBtn{
+  padding-left:39px;
+}
+
+#weatherModalList,
+.forecastList {
+  text-transform: capitalize;
+}
+
+.forecastList {
+  background-color: #6c757d;
+  color: #f8f9fa;
+  font-size: 0.5em;
+  display: inline-grid;
+  list-style-type: square;
+  font-family: 'Lato', sans-serif;
+
+}
+
+.forecastList li:first-child {
+  list-style: none;
+  color: #fd7e14;
+  font-weight: bold;
+}
+
+.list-group-item {
+  background-color: #6c757d;
+  font-family: 'Lato', sans-serif;
+  font-size:30px;
+}
+
+#modalInfo,
+#modalBody {
+  font-size: 0.9em;
+  font-family: 'Lato', sans-serif;
+}
+
+.modal-body{
+  max-height: 70vh;
+  overflow-y:scroll;
+  font-family: 'Lato', sans-serif;
+  font-size:20px;
 }
 
 .forecastImg {
@@ -91,16 +205,6 @@ html, body, #map {
   padding:10px;
 }
 
-.btn-group{
-  display: inline-flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  padding:0;
-  padding-bottom:10px;
-  padding-left:8px;
-  margin-left:-3px;
-}
-
 #cityBtn{
   margin-bottom:12px;
 }
@@ -118,9 +222,4 @@ html, body, #map {
   padding:0;
   margin-top:6px;
   display:hidden;
-}
-@media (min-width: 576px) {
-  #search {
-    margin-right:30px;
-  }
 }
