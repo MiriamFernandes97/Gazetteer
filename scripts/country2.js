@@ -2,7 +2,7 @@ class Country2 {
     constructor(countryCode) {
         this.countryCode = countryCode; //initializing countryCode
         
-        this.population = null; // attributes
+        this.population = null; // initializing attributes
         this.capital = null;
         this.currency={
             name:null,
@@ -84,7 +84,6 @@ class Country2 {
                 },
             })
             .then((result) => {   
-                console.log('logging result.data.boundingBox.geonames',result.data.boundingBox.geonames);
                 this.boundingBox = result.data.boundingBox.geonames[0];
                 return this.boundingBox;
 
@@ -95,7 +94,6 @@ class Country2 {
                 $('#infoModal').modal();
             });
         }else{
-            console.log('existing boundingBox result',this.boundingBox);
             return Promise.resolve(this.boundingBox); // otherwise just resolve the existing value.
             
         }
@@ -127,12 +125,12 @@ class Country2 {
         });
       }
       
-      //Fetch most populous cities for active country and add markers to the city layer group
+    //Fetch most populous cities for active country and add markers to the city layer group
     getCities() {
         if(this.cities){
             return Promise.resolve(this.cities);
         }
-
+        
         return $.ajax({
             url: 'php/getCityData.php',
             dataType: 'json',

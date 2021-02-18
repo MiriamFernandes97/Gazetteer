@@ -1,6 +1,5 @@
 //Create POI class with methods for displaying information about city and monument markers
-
-// this is for the modal for each monument marker, city marker.
+// This is for the modal for each monument marker, city marker.
 class PointOfInterest {
   constructor(lat, lon, geonameId, name, population, type) {
     this.latitude = lat;
@@ -34,7 +33,6 @@ class PointOfInterest {
 
   //Get wikipedia article url for the POI and display a short extract
   getWikiDetails() {
-   
     $.ajax({
       url: 'php/getWikiUrl.php',
       dataType: 'json',
@@ -44,15 +42,10 @@ class PointOfInterest {
       },
     })
       .then((result) => {
-
         const data = result['data']; // data is a property of the object results. The data has all the information returned from the Geonames API
-             
         this.timeZone = data.timezone.timeZoneId;
-      
-        this.wikiUrl = data.wikipediaURL; 
-            
+        this.wikiUrl = data.wikipediaURL;       
         const titles = this.wikiUrl.split('/')[2]; // this is because you want the title(which is after two 2 /'s) It is this.wikiUrl.split because we are trying to get the title of the wiki article from the wiki url. The url is split with /'s and the normal format is tha the title comes after two /'s.
-       
         this.displayInfo(); // this is to display the info from the url.
        
         $.ajax({ // this AJAX call is to the php routine to get the wiki summary from the above Wiki url.
@@ -64,11 +57,9 @@ class PointOfInterest {
           },
         })
           .done((result) => {
-
             const data = Object.values(result['data'])[0]; // But why was Object used?
             const extract = data['extract']; // this is to go to the data obj and look for the extract property.
             const cleaned = extract.replace('(listen)','') // to get rid of the other '(listen)'s which were not getting filtered out below.
-            // console.log(cleaned);
 
             //Extracts have '(listen)' where the wikipedia sound button would be, remove it
             const regex = /\((listen)\)/;
@@ -76,9 +67,6 @@ class PointOfInterest {
             const cleanerRegex =  /\(( )\)/;
             this.cleanerExtract = this.cleanExtract.replace(cleanerRegex,'');
 
-            // console.log( this.cleanerExtract)
-            // console.log("🚀 ~ file: point-of-interest.js ~ line 83 ~ PointOfInterest ~ .done ~  this.cleanExtract",  this.cleanExtract)
-            
             this.displayWikiDetails();
           })
           .fail(() => {
@@ -98,7 +86,6 @@ class PointOfInterest {
     );
   }
 
-
   //get current time at marker
   getTime() {
     const date = new Date();
@@ -113,11 +100,9 @@ class PointOfInterest {
   //If no article is found
   wikiFailure() {
     $('#modalBody').html(
-      `No wikipedia articleq could be found for this ${this.type}.`
+      `No wikipedia article could be found for this ${this.type}.`
     );
   }
-
- 
 
   //Get current weather & forecast. Also get current time included in json
   getWeatherInfo() {
@@ -130,24 +115,18 @@ class PointOfInterest {
         lon: this.longitude,
       },
     }).done((result) => {
-
       this.currentWeather = result.data.current.weather[0]; 
-
       this.currentTemp = result.data.current.temp; 
-
       this.humidity = result.data.current.humidity; 
-     
       this.pressure =result.data.current.pressure; 
-     
       this.dailyWeather = result.data.daily; 
-
+      
       this.displayWeather();
 
     }).fail((jqXHR, textStatus, errorThrown) => {
       console.log(`${textStatus} is the ERROR!!`);
    });
   }
-
  
   //Add weather info to the modal
   displayWeather() {
@@ -197,12 +176,11 @@ class Monument extends PointOfInterest { // this is because monument has the sam
     this.type = 'monument';
   }
   //Add general info to the modal then display it
-  displayInfo() { // this is the info we want to display when you click on the monumnet icon.
-   
+  displayInfo() { // this is the info we want to display when you click on the monument icon.
     this.getTime();
     $('#modalTitle').html(`${this.name}`); 
     $('#modalInfo').html(
-      `<li>Current Time: &nbsp; ${this.time}</li><li>Latitude: &nbsp; ${this.latitude}</li><li>Longitude: &nbsp; ${this.longitude}</li><li>Distance from your location: &nbsp; ${this.distance}km</li>`
+      `<li>Latitude: &nbsp; ${this.latitude}</li><li>Longitude: &nbsp; ${this.longitude}</li><li>Distance from your location: &nbsp; ${this.distance}km</li>`
     );
     $('#wikiInfo').removeClass('show');
     $('#forecastInfo').removeClass('show');
@@ -217,7 +195,7 @@ class City extends PointOfInterest {
     super(latitude, longitude, geonameId, name, population, type);
   }
 
-  displayInfo() {
+  displayInfo() { // this is the info we want to display when you click on the city icon.
     this.getTime();
     $('#modalTitle').html(`${this.name}`);
     $('#modalInfo').html(
