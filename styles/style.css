@@ -1,99 +1,131 @@
-body {
-  background-color: #343a40;
-  font-family: 'Lato', sans-serif;
-  font-size: 20px;
+
+@media screen and (max-width: 576px) { 
+  #countryDetailsTitle{
+    font-size:1.4em;
+  }
+  #countryDetails{
+    padding-left: 0px;
+    font-size: 1.2em;
+    padding-bottom: 13px;
+  }  
+
+  #countrySelect{
+    margin-right:1px;
+  }
+
+  .modal-footer{
+    justify-content: center;
+  }
+
+ #lists{
+    padding: -0.5rem 1rem;
+  }
+
 }
 
-#details {
-  margin: 1em;
+@media screen and (min-width: 1400px) { 
+
+  #search {
+    margin-right:25px;
+  }
+
+  #countrySelect{
+    font-size:26px;
+  }
+
+  #countryDetails{
+    font-size:1.3em;
+    padding-bottom: 1.3em;
+  }
+
+  #countryDetailsTitle{
+    font-size:1.4em;
+  }
+
+  #title{
+    font-size:2em;
+  }
 }
 
-.full-height {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+html,body{
+  overflow:hidden;
+  min-height:100%;
+} 
+
+#map{
+  z-index: 20;
+  height: 100vh;
+  width:100vw;
+  overflow:hidden;
 }
 
-.fill-height {
-  flex-grow: 1;
-  width: 100%;
-}
-
-.controlsdiv {
-  display: table;
-  width: 100%;
-}
-
-/* #countrySelect {
-  font-family: 'Lato', sans-serif;
-  margin-top:10px;
-  margin:0 auto;
-  position:absolute;
-} */
-
-#countrySelect {
-  font-family: 'Lato', sans-serif;
-  min-width: 270px;
-  width: 50vw;
-  height: 45px;
-  border-radius: 15px;
-  display: block;
-  margin: 0 auto;
-  outline: none;
-}
-
-#search {
-  background-color: #343a40;
+/* The select bar container. */
+#search{
   padding-bottom: 10px;
-  border-bottom: 1px solid #6c757d;
+  border-bottom: 1px solid #6c757d; 
+  padding-right:10px;
+  padding-left:10px;
 }
 
-p.heading{
-  color: #f8f9fa;
+#title{
+  font-family: 'Lato', sans-serif;
+  font-size: 30px;
+  padding-bottom:10px;
+  margin-left:10px;
 }
 
-/* Double-check this. */
-.ui-autocomplete { 
-  z-index: 9999 !important;
-  color: #f8f9fa;
-  border: 1px solid #6c757d;
-  background-color: #343a40;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
+#countrySelect{
+  font-family: 'Lato', sans-serif;
+  font-size:20px;
+  display:block;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  appearance:none; 
 }
 
-.ui-menu-item {
-  border: 1px solid #6c757d;
+#mapContainer{
+  height:100vh;
+  width:100vw;
+}
+
+.countryInfo{
+  position:absolute;
+  left:0;
+  z-index: 1060;
+  font-family: 'Lato', sans-serif;
+  font-size:0.9em;
+}
+
+#flag {
+  height: 4em;
+  padding-top:10px;
 }
 
 .info {
   margin-right: 1.2em;
+  margin-left:1.2em;
 }
 
-#flag {
-  height: 1.6em;
+.forecastImg {
+  float: left;
+  height: 80px;
+}
+
+.btn-secondary,.btn-danger{
+  font-size:20px;
 }
 
 ::placeholder {
   color: #a3a8ac;
 }
 
-#map {
-  /* height:100%; */
-  height:calc(100vh-140px);
-  min-width: 100vw;
-}
+.ui-menu-item {
+  border: 1px solid #6c757d;
+  font-family: 'Lato', sans-serif;
 
-footer {
-  margin-top: 28px;
 }
-
-#options {
-  height: 28px;
-}
-
-.list-group-item {
-  background-color: #6c757d;
+#closeBtn{
+  padding-left:39px;
 }
 
 #weatherModalList,
@@ -107,27 +139,33 @@ footer {
   font-size: 0.5em;
   display: inline-grid;
   list-style-type: square;
+  font-family: 'Lato', sans-serif;
+
 }
 
 .forecastList li:first-child {
   list-style: none;
-  font-size: 1.3em;
   color: #fd7e14;
   font-weight: bold;
 }
-#title{
-  color:beige;
-  padding:20px;
+
+.list-group-item {
+  background-color: #6c757d;
+  font-family: 'Lato', sans-serif;
+  font-size:30px;
 }
 
 #modalInfo,
 #modalBody {
-  font-size: 0.7em;
+  font-size: 0.9em;
+  font-family: 'Lato', sans-serif;
 }
 
 .modal-body{
   max-height: 70vh;
   overflow-y:scroll;
+  font-family: 'Lato', sans-serif;
+  font-size:20px;
 }
 
 .forecastImg {
@@ -163,14 +201,25 @@ footer {
   color: #f8f9fa;
 }
 
-@media (min-width: 900px) {
-  .btn-secondary {
-    font-size: 20px;
-  }
+.fa-bars:before {
+  padding:10px;
 }
 
-@media (min-width: 1200px) {
-  #countrySearch {
-    width: 30vw;
-  }
+#cityBtn{
+  margin-bottom:12px;
+}
+
+#monumentBtn{
+  margin-bottom:12px;
+}
+
+.slideMenu{
+  position: absolute;
+  z-index: 100;
+}
+
+#sliderContainer{
+  padding:0;
+  margin-top:6px;
+  display:hidden;
 }
