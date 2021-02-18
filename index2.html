@@ -1,106 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF 8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <meta name="author" content="Miriam Fernandes">
-        <meta name="description" content="Gazeetteer Application using cURL,PHP,AJAX,and JSON,jQuery">
+  <head>
+    <meta charset="UTF 8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
+    <meta name="author" content="Miriam Fernandes">
+    <meta name="description" content="Gazeetteer Application using cURL,PHP,AJAX,and JSON,jQuery">
 
-        <title>Gazetteer</title>
+    <title>Gazetteer</title>
 
-        <!-- Link to Favicon -->
-        <link rel="icon" type="image/png" href="./favicon.png"/>
+    <!-- Link to Favicon -->
+    <link rel="icon" type="image/png" href="./favicon.png"/>
 
-        <!--Fonts-->
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
+    <!--Fonts-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
 
-        <!-- CSS files -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-        <link rel="stylesheet" href="./styles/style2.css"  type="text/css" />
-        <link rel="stylesheet" href="./libs/jqueryui/jquery-ui.min.css"  type="text/css"/>
-        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-        <link rel="stylesheet" href="./libs/leaflet-extra-markers/leaflet.extra-markers.min.css" type="text/css" />
-        <link rel="stylesheet" href="./libs/markercluster/MarkerCluster.css" type="text/css" />
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-secondary d-flex flex-row flex-wrap">  
+    <!-- CSS files -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <link rel="stylesheet" href="./styles/style2.css" type="text/css" />
+    <link rel="stylesheet" href="./libs/jqueryui/jquery-ui.min.css"  type="text/css"/>
+    <link rel="stylesheet" href="./libs/leaflet-extra-markers/leaflet.extra-markers.min.css" type="text/css" />
+    <link rel="stylesheet" href="./libs/fontawesome/fontawesome.min.css"  type="text/css"/>
+    <link rel="stylesheet" href="./libs/fontawesome/solid.min.css" type="text/css" />
+    <link rel="stylesheet" href="./libs/markercluster/MarkerCluster.css" type="text/css" />
+  </head>
+  <body class="d-flex flex-column">
+        <nav id ="navBar" class="navbar navbar-expand-lg navbar-fixed-top navbar-dark bg-secondary d-flex flex-row flex-wrap ">    
             <h1 id="title" class="navbar-brand">Gazetteer</h1>
-           
             <div id="search" class="flex-grow-1"> 
-                <select id="countrySelect" class="border border-white rounded-pill bg-secondary text-white text-center dropdown-md-center p-1 w-100 float-sm-end m-s-sm-1" style="max-width: 375px;float:right;" name="country" required="" ></select>
+              <select id="countrySelect" class="border border-white bg-secondary text-white text-center dropdown-md-center p-1 w-100 " style="max-width: 375px;float:right;" name="country" required="" ></select>
             </div>             
         </nav>
-
-        <div>
-            <div class="row w-100" >
-                <div class="col-sm-6 sidebar"> 
-            <div id="sliderContainer" class=" container slideMenu bg-white w-auto m-top-xxl-2" > <!--margin-top:6px-->
-               <i id="sliderToggle" class="fa fa-bars fa-2x" aria-hidden="true" ></i>
-            </div>
-
-            <div class="countryInfo" style="display:none">  
-                <span class="list-group-item bg-dark text-white fs-5"> Country Information:
-                    <span class="pull-right" id="slideSubMenu">
-                        <i class="fa fa-times"></i>
-                    </span>
+    <div>
+      <div class="row w-100" >
+        <div class="col-sm-6 sidebar"> 
+          <div id="sliderContainer" class=" container slideMenu bg-white w-auto m-top-xxl-2"> 
+          <i id="sliderToggle" class="fa fa-bars fa-2x" aria-hidden="true" ></i>
+          </div>
+        
+          <div class="countryInfo" style="display:none;">  
+            <span class="list-group-item bg-dark text-white" id="countryDetailsTitle"> Country Information:
+                <span class="pull-right" id="slideSubMenu">
+                    <i class="fa fa-times" id="closeBtn"></i>
                 </span>
+            </span>
 
-                <div class="container bg-dark text-white" id="countryDetails">
-                        <p><img id="flag" class="info" /></p>
-                        <p class="info">Capital:&nbsp;<span id="capital"></span></p>
-                        <p class="info">Area(km<sup>2</sup>):&nbsp;<span id="area"></span></p>
-                        <p class="info">Population:&nbsp;<span id="population"></span></p>
-                        <p class="info">Currency:&nbsp; <span id="currency"></span></p>
-                                      
-                    <div class="container">
-                        <!-- <div class="btn btn-group " role="button" >
-                            <button type="button" id="cityBtn" class="btn btn-outline-primary text-white">Cities Button</button>  
-                            <button type="button" id="monumentBtn" class="btn btn-outline-primary">Monuments Button</button>
-                            <button type="button" id="earthquakeBtn" class="btn btn-outline-primary">Earthquake Button</button>
-                        </div> -->
-                        <div class="form-check form-switch"> 
-                            <input type="checkbox" id="cityBtn" class="form-check-input text-white">
-                            <label class="form-check-label" for="flexSwitchCheckChecked">Cities Button</label>
-                        </div>
+          <div class="container bg-dark text-white ps-sm-1" id="countryDetails">
+            <p><img id="flag" class="info" /></p>
+            <p class="info">Capital:&nbsp;<span id="capital"></span></p>
+            <p class="info">Area(km<sup>2</sup>):&nbsp;<span id="area"></span></p>
+            <p class="info">Population:&nbsp;<span id="population"></span></p>
+            <p class="info">Currency:&nbsp; <span id="currency"></span></p>
+                                
+            <div class="container" style="margin:-6px;">
+              <div class="form-check form-switch"> 
+                  <input type="checkbox" id="cityBtn" class="form-check-input text-white">
+                  <label class="form-check-label" for="flexSwitchCheckChecked">Cities</label>
+              </div>
 
-                        <div class="form-check form-switch">
-                            <input type="checkbox" id="monumentBtn" class="form-check-input text-white">
-                            <label class="form-check-label" for="flexSwitchCheckChecked">Monument Button</label>
-                        </div>
+              <div class="form-check form-switch">
+                  <input type="checkbox" id="monumentBtn" class="form-check-input text-white">
+                  <label class="form-check-label" for="flexSwitchCheckChecked">Monuments</label>
+              </div>
 
-                        <div class="form-check form-switch">
-                            <input type="checkbox" id="earthquakeBtn" class="form-check-input text-white">
-                            <label class="form-check-label" for="flexSwitchCheckChecked">Earthquake Button</label>
-                        </div>
-
-                    </div>    
-                </div>
-            </div>  
-
-            <div id="mapContainer">
-              <div id="map"></div>
-            </div>
+              <div class="form-check form-switch">
+                  <input type="checkbox" id="earthquakeBtn" class="form-check-input text-white">
+                  <label class="form-check-label" for="flexSwitchCheckChecked">Earthquakes</label>
+              </div>
+            </div>    
+          </div>
+      </div>
+    </div>  
+        <div id="mapContainer">
+          <div id="map"></div>
         </div>
+    </div>
 
-        <div class="container">
-            <div class="card">
-                
+
+    <div class="modal modal-scroll min-vw-100" id="infoModal" >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-secondary">
+                <h5 class="modal-title text-light" id="modalTitle"></h5>
+                  <br />
+
+                <button
+                    type="button"
+                    class="close btn-secondary "
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                  <i class="fa fa-times fa-1x"></i>
+                </button>
+
+          </div>
+          <div class="accordion" id="infoAccordion">
+            <div
+              class="collapse show"
+              id="generalInfo"
+              data-parent="#infoAccordion"
+            >
+              <div class="modal-body bg-dark text-light">
+                <ul id="modalInfo" class="text-light"></ul>
+              </div>
             </div>
+            <div class="collapse" id="wikiInfo" data-parent="#infoAccordion">
+              <div class="modal-body bg-dark text-light">
+                <p id="modalBody"></p>
+              </div>
+            </div>
+            <div class="collapse" id="weatherInfo" data-parent="#infoAccordion">
+              <div class="modal-body bg-dark text-light">
+                <img id="weatherImage" src="" />
+                <ul id="weatherModalList"></ul>
+              </div>
+            </div>
+            <div
+              class="collapse"
+              id="forecastInfo"
+              data-parent="#infoAccordion"
+            >
+              <div class="modal-body bg-dark text-light">
+                <ul class="list-group">
+                  <li class="list-group-item lists flex-fill">
+                    <img id="forecastImg1" class="forecastImg" />
+                    <ul id="forecast1" class="forecastList"></ul>
+                  </li>
+                  <li class="list-group-item lists flex-fill">
+                    <img id="forecastImg2" class="forecastImg" />
+                    <ul id="forecast2" class="forecastList"></ul>
+                  </li>
+                  <li class="list-group-item lists flex-fill">
+                    <img id="forecastImg3" class="forecastImg" />
+                    <ul id="forecast3" class="forecastList"></ul>
+                  </li>
+                  <li class="list-group-item lists flex-fill">
+                    <img id="forecastImg4" class="forecastImg" />
+                    <ul id="forecast4" class="forecastList"></ul>
+                  </li>
+                  <li class="list-group-item lists flex-fill">
+                    <img id="forecastImg5" class="forecastImg" />
+                    <ul id="forecast5" class="forecastList"></ul>
+                  </li>
+                  <li class="list-group-item lists flex-fill">
+                    <img id="forecastImg6" class="forecastImg" />
+                    <ul id="forecast6" class="forecastList"></ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer bg-dark">
+            <button
+              type="button"
+              class="btn btn-secondary badge"
+              data-target="#generalInfo"
+              data-toggle="collapse"
+              aria-expanded="true"
+              aria-controls="collapseExample"
+            >
+              Info
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary badge"
+              data-target="#wikiInfo"
+              data-toggle="collapse"
+              aria-expanded="false"
+              aria-controls="collapseExample"
+            >
+              Wiki
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary badge"
+              data-target="#weatherInfo"
+              data-toggle="collapse"
+              aria-expanded="false"
+              aria-controls="collapseExample"
+            >
+              Weather
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary badge"
+              data-target="#forecastInfo"
+              data-toggle="collapse"
+              aria-expanded="false"
+              aria-controls="collapseExample"
+            >
+              Forecast
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger badge"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
         </div>
-    
+      </div>
+    </div>
+
         <!--Scripts-->
         <script src="./libs/jquery/jquery.min.js"></script>
         <script src="./libs/jqueryui/jquery-ui.min.js"></script>
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
         <script src="./libs/leaflet-extra-markers/leaflet.extra-markers.min.js"></script>
         <script src="./libs/markercluster/leaflet.markercluster.min.js"></script>
+        <script src="./libs/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="./scripts/point-of-interest.js"></script>
         <script src="./scripts/script2.js"></script>
         <script src="./scripts/country2.js"></script>
+    
+  </body>
 
-
-    </body>
 </html>
