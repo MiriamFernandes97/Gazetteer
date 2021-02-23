@@ -414,7 +414,7 @@ $(document).ready(() => {
     });
   
     $('.slideMenu').on('click',function(){		
-        $(this).next('.countryInfo').toggle('slide');
+        $('.countryInfo').toggle('slide');
         $('.slideMenu').hide();
     })
   });
