@@ -26,58 +26,60 @@
     <link rel="stylesheet" href="./libs/markercluster/MarkerCluster.css" type="text/css" />
   </head>
   <body class="d-flex flex-column">
-        <nav id ="navBar" class="navbar navbar-expand-lg navbar-fixed-top navbar-dark bg-secondary d-flex flex-row flex-wrap ">    
-            <h1 id="title" class="navbar-brand">Gazetteer</h1>
-            <div id="search" class="flex-grow-1"> 
-              <select id="countrySelect" class="border border-white bg-secondary text-white text-center dropdown-md-center p-1 w-100 " style="max-width: 375px;float:right;" name="country" required="" ></select>
-            </div>             
-        </nav>
-    <div>
-      <div class="row w-100" >
-        <div class="col-sm-6 sidebar"> 
-          <div id="sliderContainer" class=" container slideMenu bg-white w-auto m-top-xxl-2"> 
-          <i id="sliderToggle" class="fa fa-bars fa-2x" aria-hidden="true" ></i>
-          </div>
-        
-          <div class="countryInfo" style="display:none;">  
-            <span class="list-group-item bg-dark text-white" id="countryDetailsTitle"> Country Information:
-                <span class="pull-right" id="slideSubMenu">
-                    <i class="fa fa-times" id="closeBtn"></i>
-                </span>
-            </span>
 
-          <div class="container bg-dark text-white ps-sm-1" id="countryDetails">
-            <p><img id="flag" class="info" /></p>
-            <p class="info">Capital:&nbsp;<span id="capital"></span></p>
-            <p class="info">Area(km<sup>2</sup>):&nbsp;<span id="area"></span></p>
-            <p class="info">Population:&nbsp;<span id="population"></span></p>
-            <p class="info">Currency:&nbsp; <span id="currency"></span></p>
-                                
-            <div class="container" style="margin:-6px;">
-              <div class="form-check form-switch"> 
-                  <input type="checkbox" id="cityBtn" class="form-check-input text-white">
-                  <label class="form-check-label" for="flexSwitchCheckChecked">Cities</label>
-              </div>
+    <nav id ="navBar" class="navbar navbar-expand-lg navbar-fixed-top navbar-dark bg-secondary d-flex flex-row flex-wrap ">    
+        <h1 id="title" class="navbar-brand">Gazetteer</h1>
+        <div id="search" class="flex-grow-1"> 
+          <select id="countrySelect" class="border border-white bg-secondary text-white text-center dropdown-md-center p-1 w-100 " style="max-width: 375px;float:right;" name="country" required="" ></select>
+        </div>             
+    </nav>
 
-              <div class="form-check form-switch">
-                  <input type="checkbox" id="monumentBtn" class="form-check-input text-white">
-                  <label class="form-check-label" for="flexSwitchCheckChecked">Monuments</label>
-              </div>
-
-              <div class="form-check form-switch">
-                  <input type="checkbox" id="earthquakeBtn" class="form-check-input text-white">
-                  <label class="form-check-label" for="flexSwitchCheckChecked">Earthquakes</label>
-              </div>
-            </div>    
-          </div>
+    <div class="col-sm-6 sidebar"> 
+      <div id="sliderContainer" class=" container slideMenu bg-white w-auto m-top-xxl-2"> 
+        <i id="sliderToggle" class="fa fa-bars fa-2x" aria-hidden="true" ></i>
       </div>
-    </div>  
-        <div id="mapContainer">
-          <div id="map"></div>
+    </div> 
+
+    <!-- This div below is to create a parent for countryInfo -->
+    <div>
+      <div class="countryInfo" style="display:none;">  
+        <span class="list-group-item bg-dark text-white" id="countryDetailsTitle"> Country Information:
+          <span class="pull-right" id="slideSubMenu">
+            <i class="fa fa-times" id="closeBtn"></i>
+          </span>
+        </span>
+
+        <div class="container bg-dark text-white ps-sm-1" id="countryDetails">
+          <p><img id="flag" class="info" /></p>
+          <p class="info">Capital:&nbsp;<span id="capital"></span></p>
+          <p class="info">Area(km<sup>2</sup>):&nbsp;<span id="area"></span></p>
+          <p class="info">Population:&nbsp;<span id="population"></span></p>
+          <p class="info">Currency:&nbsp; <span id="currency"></span></p>
+                              
+          <div class="container" style="margin:-6px;">
+            <div class="form-check form-switch"> 
+              <input type="checkbox" id="cityBtn" class="form-check-input text-white">
+              <label class="form-check-label" for="flexSwitchCheckChecked">Cities</label>
+            </div>
+
+            <div class="form-check form-switch">
+              <input type="checkbox" id="monumentBtn" class="form-check-input text-white">
+              <label class="form-check-label" for="flexSwitchCheckChecked">Monuments</label>
+            </div>
+
+            <div class="form-check form-switch">
+              <input type="checkbox" id="earthquakeBtn" class="form-check-input text-white">
+              <label class="form-check-label" for="flexSwitchCheckChecked">Earthquakes</label>
+            </div>
+          </div>    
         </div>
+      </div>
     </div>
 
-
+    <div id="mapContainer" class="flex-grow-1">
+      <div id="map"></div>
+    </div>
+   
     <div class="modal modal-scroll min-vw-100" id="infoModal" >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
